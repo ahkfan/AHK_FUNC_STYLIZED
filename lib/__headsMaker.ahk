@@ -1,14 +1,14 @@
 ﻿a =
 (
-dbg-调试
-ahk-脚本进程
-conf-脚本全局设定
-os-系统与文件
-prog-进程
-sound-声音
-gui-GUI窗体
-guiop-GUI控件
-ini-ini配置文件
+dbg	- 调试
+ahk	- 脚本进程
+conf	- 脚本全局设定
+os	- 系统与文件
+prog	- 进程
+sound	- 声音
+gui	- GUI窗体
+guiop	- GUI控件
+ini	- ini配置文件
 key	- 键
 m	- 鼠标
 win	- 窗口
