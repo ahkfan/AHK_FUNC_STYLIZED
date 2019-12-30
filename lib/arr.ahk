@@ -1,4 +1,5 @@
-﻿; 数组与关联数组
+﻿;~ 数组与关联数组
+
 arr_cpy(arr) {
 	/*
 		简介: 完全拷贝一个对象, 无法拷贝方法 (copy)
@@ -14,10 +15,11 @@ arr_cpy(arr) {
 			返回对象与源对象无引用关系
 
 		测试:
-		a := {"abc": {"ddd": 222, "ggg": 333}, "bcd":567}
-		b := array_cpy(a)
-		a.abc.ddd := 555
-		MsgBox, % a.abc.ddd "-" b.abc.ddd
+			a := {"abc": {"ddd": 222, "ggg": 333}, "bcd":567}
+			b := arr_cpy(a)
+			a.abc.ddd := 555
+			ClipBoard := (a.abc.ddd) "-" (b.abc.ddd)
+			;剪切板文本: 555-222
 	*/
 
 	if not isobject(arr) {
@@ -42,9 +44,15 @@ arr_tkv(arr) {
 		返回值:
 			type(object)
 
+		测试:
+			arr := arr_tkv(["时光", "岁月", "白驹"])
+			ClipBoard := arr_dbg1(arr)
+			;剪切板文本: {岁月:2, 时光:1, 白驹:3}
+
+
 	*/
 	ret := {}
-	for key, var in obj
+	for key, var in arr
 		ret[var] := key
 	return ret
 }
@@ -64,7 +72,7 @@ arr_dbg1(arr) {
 
 		测试:
 			Clipboard := arr_dbg1([66, 77, {"K": 88, "D": 99}])
-			;~ 剪切板数据为 "{1:66, 2:77, 3:{D:99, K:88}}"
+			;~ 剪切板文本: {1:66, 2:77, 3:{D:99, K:88}}
 
 	*/
     ret := ""
@@ -100,6 +108,7 @@ arr_dbg2(arr) {
 			type(string)
 
 		测试:
+
 			MsgBox, % arr_dbg2([66, 77, {"K": 88, "D": 99}])
 
 			弹窗内容:

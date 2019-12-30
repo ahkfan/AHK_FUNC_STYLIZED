@@ -1,4 +1,8 @@
-﻿a =
+﻿/*
+
+;~ 该脚本用于批量创建文件
+
+a =
 (
 dbg	- 调试
 ahk	- 脚本进程
@@ -30,4 +34,5 @@ loop, parse, a, `n, `r
 		FileAppend, % ";~" ls[2], % ls[1] ".ahk", utf-8
 	}
 }
+*/
 
