@@ -55,6 +55,7 @@ rand_choice(source)
 rand_shuffle(source)
 {
 	; 返回一个顺序被随机打乱的简单数组
+	; Fisher–Yates Shuffle
 	s2 := New source                    ; 用原型链防止操作影响 source
 
 	if IsObject(source)
