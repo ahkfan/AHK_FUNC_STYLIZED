@@ -32,7 +32,7 @@ arr_cpy(arr) {
 	return ret
 }
 
-arr_tkv(arr) {
+arr_swap_key_var(arr) {
 	/*
 		简介: 调换 数组 的 键值对 (trans key var), 不建议多维复杂类型的数组使用
 

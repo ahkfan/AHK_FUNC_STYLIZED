@@ -73,9 +73,6 @@ m_move2(x, y, mode := "s", speed := 0, compare := "")
 	参5: type(char) 可舍, 默认
 
 	*/
-
-
-
 }
 
 
