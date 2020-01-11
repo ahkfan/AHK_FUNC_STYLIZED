@@ -18,7 +18,7 @@ m_pmsg_nc_up(str: witch:="L", int: hwnd)
 m_pmsg_nc_click(str: witch:="L", int: hwnd)
 */
 
-
+m_move(-1, -1)
 
 
 
