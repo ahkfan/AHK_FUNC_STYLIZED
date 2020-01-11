@@ -11,7 +11,7 @@ arr_dbg3(arr)
 arr_cpy(arr)
 {
 	/*
-		简介: 完全拷贝一个对象, 无法拷贝方法 (copy)
+		简介: 完全拷贝一个对象, 无法拷贝class中的方法, cpy = copy
 
 		原型: 无
 
