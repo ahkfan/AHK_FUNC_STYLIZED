@@ -1,6 +1,15 @@
-﻿;~ 数组与关联数组
+﻿/*  数组与关联数组
 
-arr_cpy(arr) {
+arr_cpy(arr)
+arr_swap_key_var(arr)
+
+arr_dbg1(arr)
+arr_dbg2(arr)
+arr_dbg3(arr)
+*/
+
+arr_cpy(arr)
+{
 	/*
 		简介: 完全拷贝一个对象, 无法拷贝方法 (copy)
 
@@ -32,7 +41,8 @@ arr_cpy(arr) {
 	return ret
 }
 
-arr_swap_key_var(arr) {
+arr_swap_key_var(arr)
+{
 	/*
 		简介: 调换 数组 的 键值对 (trans key var), 不建议多维复杂类型的数组使用
 
@@ -57,7 +67,8 @@ arr_swap_key_var(arr) {
 	return ret
 }
 
-arr_dbg1(arr) {
+arr_dbg1(arr)
+{
 	/*
 		简介: 用于调试数组与关联数组, 返回字符串, arr_dbg2/3类似
 
@@ -94,7 +105,8 @@ arr_dbg1(arr) {
     return ret
 }
 
-arr_dbg2(arr) {
+arr_dbg2(arr)
+{
 	/*
 		简介: 用于调试数组与关联数组
 
@@ -126,7 +138,8 @@ arr_dbg2(arr) {
     return ret
 }
 
-arr_dbg3(arr, crtPos := 0) {
+arr_dbg3(arr, crtPos := 0)
+{
 	/*
 		简介: 用于调试数组与关联数组
 
@@ -159,9 +172,11 @@ arr_dbg3(arr, crtPos := 0) {
 
     sc := 3
     ret := ""
-    if IsObject(arr) {
+    if IsObject(arr)
+	{
 
-        if (crtPos = 0) {
+        if (crtPos = 0)
+		{
             ret := "got (" arr.count() ") items in array, detail:`n`n"
 			/*
             for key in arr
@@ -170,7 +185,9 @@ arr_dbg3(arr, crtPos := 0) {
 			*/
             for key, var in arr
                 ret .= key . "=" . arr_dbg3(var, crtPos + 1) "`n"
-        } else {
+        }
+		else
+		{
             ret := "array(" arr.count() ")`n"
             fore := ""
             Loop, % crtPos * sc
@@ -180,8 +197,13 @@ arr_dbg3(arr, crtPos := 0) {
                 ret .= fore . key . "=" . arr_dbg3(var, crtPos + 1) "`n"
         }
         if (key <> "")
-            ret := SubStr(ret, 1, -1)
-    } else {
+		{
+			ret := SubStr(ret, 1, -1)
+		}
+
+    }
+	else
+	{
         if arr is number
             ret := arr
         else if (arr = "")
