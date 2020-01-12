@@ -1,5 +1,5 @@
-﻿/*随机
-rand(min := 0, max := 2147483647)
+﻿/* 随机
+rand(min, max)
 rand_range(min, max, step := 1)
 rand_choice(source)
 rand_shuffle(source)
