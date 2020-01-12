@@ -1,4 +1,5 @@
 ﻿/* 随机
+要是测试通过了记得写个 test pass 的注释
 rand(min, max)
 rand_range(min, max, step := 1)
 rand_choice(source)
@@ -117,7 +118,7 @@ rand_sample(source, num)	; TODO: 把这个部分改成可以跑的
 		Loop, num
 		{
 			j := this.Rand(1, l-A_Index)
-			While (this._isInList(j, select))           ; TODO: 这句只是个表示意思的伪代码
+			While (this._isInList(j, select))           ; TODO: 现在应可以通过了
 				j := this.Rand(1, l-A_Index)
 			select.Push(j)
 			result[A_Index] := source[j]
