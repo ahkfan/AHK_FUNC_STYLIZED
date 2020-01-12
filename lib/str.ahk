@@ -19,7 +19,7 @@ str_regex_get_all(src, regex)
 
 	测试:
 		a := "1|123,123|555,666|123"
-		get := RegExAll(a, "\d+\,\d+")
+		get := str_regex_get_all(a, "\d+\,\d+")
 		Loop, % get.len
 			MsgBox, % get[A_Index]
 	*/
