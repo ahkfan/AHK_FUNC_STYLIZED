@@ -91,7 +91,7 @@ arr_dbg1(arr)
         ret .= "{"
         for key, var in arr
             ret .= key . ":" . arr_dbg1(var) . ", "
-        if (key <> "")
+        if (key != "")
             ret := SubStr(ret, 1, -2)
         ret .= "}"
     } else {
@@ -133,7 +133,7 @@ arr_dbg2(arr)
     ret := ""
     for key, var in arr
         ret .= key "=" arr_dbg1(var) "`n"
-    if (key <> "")
+    if (key != "")
         ret := SubStr(ret, 1, -1)
     return ret
 }
@@ -196,7 +196,7 @@ arr_dbg3(arr, crtPos := 0)
             for key, var in arr
                 ret .= fore . key . "=" . arr_dbg3(var, crtPos + 1) "`n"
         }
-        if (key <> "")
+        if (key != "")
 		{
 			ret := SubStr(ret, 1, -1)
 		}
