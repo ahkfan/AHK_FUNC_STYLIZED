@@ -6,11 +6,17 @@ ahk().MsgControl(title, command)
 
 
 */
-#include __warning.ahk
+
+
+/* 警告测试
+#include AHKFS_WARNING.ahk
 
 ahk := ahk()
+ahk.abc()
+return
 
-ahk.abc := 123
+*/
+
 
 ahk()
 {
@@ -53,10 +59,5 @@ class __ClASS_AHK
 			Throw Exception(this.file " warning!:`ncommand: " command " dose not exist!`n")
 		}
 		PostMessage, % WM_COMMAND, % cmdDict[command], , , % title
-	}
-
-	msg()
-	{
-		MsgBox, 123
 	}
 }
