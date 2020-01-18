@@ -1,6 +1,6 @@
 #Include Yunit.ahk
 
-Yunit.Use(YunitStdErr).Test(NumberTestSuite, StringTestSuite)
+Yunit.Use(YunitStdOut).Test(NumberTestSuite, StringTestSuite)
 
 class NumberTestSuite
 {

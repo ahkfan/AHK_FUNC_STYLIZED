@@ -1,7 +1,7 @@
 ; Modified from Yunit, make it fit to ahk ver 1.3
 ; Simple Yunit
 
-class YunitStdErr
+class YunitStdOut
 {
     Update(Category, Test, Result) ;wip: this only supports one level of nesting?
     {
@@ -15,7 +15,7 @@ class YunitStdErr
             Details := ""
             Status := "PASS"
         }
-        FileAppend, % Status ": " Category "." Test " " Details "`n", **
+        FileAppend, % Status ": " Category "." Test " " Details "`n", *
     }
 }
 
