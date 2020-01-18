@@ -20,8 +20,7 @@ return
 
 ahk()
 {
-	__Class_AHK.base := AHKFS_WARNING()
-	return __Class_AHK
+	return __Class_AHK, __ClASS_AHK.base := AHKFS_WARNING()
 }
 
 class __ClASS_AHK
