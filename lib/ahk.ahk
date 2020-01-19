@@ -91,4 +91,5 @@ class __ClASS_AHK
         }
         PostMessage, % WM_COMMAND, % cmdDict[command], , , % title
     }
+
 }
