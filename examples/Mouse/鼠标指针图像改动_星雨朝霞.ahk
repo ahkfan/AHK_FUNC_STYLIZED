@@ -1,0 +1,51 @@
+﻿#SingleInstance force
+	;图标数据
+	Cross_CUR:="000002000100202002000F00100034010000160000002800000020000000400000000100010000000000800000000000000000000000020000000200000000000000FFFFFF000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF83FFFFFE6CFFFFFD837FFFFBEFBFFFF783DFFFF7EFDFFFEAC6AFFFEABAAFFFE0280FFFEABAAFFFEAC6AFFFF7EFDFFFF783DFFFFBEFBFFFFD837FFFFE6CFFFFFF83FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF28000000"
+	Cross_CUR_File=%A_Temp%\Cross.CUR
+
+	Hotkey, lbutton, setcursor
+	Hotkey, lbutton up, alloff
+
+return
+
+setcursor:
+	IfNotExist,%Cross_CUR_File%
+		BYTE_TO_FILE(StrToBin(Cross_CUR),Cross_CUR_File)
+	CursorHandle := DllCall( "LoadCursorFromFile", Str,Cross_CUR_File )
+	DllCall( "SetSystemCursor", Uint,CursorHandle, Int,32512 )
+return
+
+alloff:
+	Hotkey, lbutton up, off
+	DllCall( "SystemParametersInfo", UInt,0x57, UInt,0, UInt,0, UInt,0 )	;还原鼠标指针
+	SetTimer, stop, -200
+return
+
+stop:
+	ExitApp
+return
+
+
+
+
+;字符串转二进制
+StrToBin(Str) {
+	XMLDOM:=ComObjCreate("Microsoft.XMLDOM")
+	xmlver:="<?xml version=`"`"1.0`"`"?>"
+	XMLDOM.loadXML(xmlver)
+	Pic:=XMLDOM.createElement("pic")
+	Pic.dataType:="bin.hex"
+	pic.nodeTypedValue := Str
+	StrToByte := pic.nodeTypedValue
+	return StrToByte
+}
+
+; 数据流保存为文件
+BYTE_TO_FILE(body, filePath){
+	Stream := ComObjCreate("Adodb.Stream")
+	Stream.Type := 1
+	Stream.Open()
+	Stream.Write(body)
+	Stream.SaveToFile(filePath,2) ;文件存在的就覆盖
+	Stream.Close()
+}
