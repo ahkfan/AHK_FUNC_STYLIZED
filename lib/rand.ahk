@@ -38,6 +38,8 @@ class Rand
     {
         if a is digit
             Random, , a
+        else
+            Throw Exception("Seed must be an integer", A_ThisFunc)
         Return this         ; 允许用rand.seed().method()调用
     }
 
@@ -55,6 +57,8 @@ class Rand
     {
         ; 返回从"max"到"min"之间的一随机数，间隔为"step"
         ; 只能使用整数
+        if min is not digit or max is not digit
+            Throw Exception("Min and Max must be an integer", A_ThisFunc)
         out := 0
         Random, out, 0, (max-min) // step
         Return min + out * step
@@ -80,12 +84,12 @@ class Rand
                 for k,v in source
                     s2 := s2.push(k)
                 i := this.Choice(s2)
-                Return Object(i, s2[i]) ; 关联数组的键用{}的方式设置，不能用变量，只好这样了
+                Return Object(i, source[i]) ; 关联数组的键用{}的方式设置，不能用变量，只好这样了
 			case "String":
 				i := this.Rand(1, StrLen(source))
             	Return SubStr(source, i, 1)
 			Default:
-				Throw Exception("Source must an object with lenght")
+				Throw Exception("Source must an object with lenght", A_ThisFunc)
 		} 
     }
 
@@ -108,7 +112,7 @@ class Rand
 				}
 				Return s2
 			Default:
-				Throw, Exception("Source must be an unempty simple array, not an empty array or associative arrays.")
+				Throw, Exception("Source must be an unempty simple array, not an empty array or associative arrays.", A_ThisFunc)
 		}
         /*
         byref 版
@@ -131,7 +135,7 @@ class Rand
     {
         l := this._getLength(source)
         if num >= l or num <= 0
-            Throw Exception("Sample larger than source or is negative")
+            Throw Exception("Sample larger than source or is negative", A_ThisFunc)
 
         ; 这个情况区分的部分是什么道理我也不知道，python官方是这么写的LOL
         result := []
@@ -142,23 +146,23 @@ class Rand
         if l <= setsize
         {
             pool := New source                  ; 用原型链防止对 pool 的操作影响 source 
-            Loop, num
+            Loop %num%
             {
                 j := this.Rand(1, l-A_Index+1)
-                result[A_Index] := pool[j]
+                result.Push(pool[j]) 
                 pool[j] := pool[l-A_Index+1]    ; 把用过的用没用过的替换
             }
         }
         else
         {
             select := []
-            Loop, num
+            Loop %num%
             {
                 j := this.Rand(1, l-A_Index)
                 While (this._isInList(j, select))           ; TODO: 这句只是个表示意思的伪代码
                     j := this.Rand(1, l-A_Index)
                 select.Push(j)
-                result[A_Index] := source[j]
+                result.Push(source[j]) 
             }
         }
         Return result

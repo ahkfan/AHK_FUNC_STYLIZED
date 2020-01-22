@@ -3,6 +3,9 @@
 arr_cpy(arr)
 arr_swap_key_var(arr)
 
+arr_print(array) pass
+
+我觉得这三个没有什么太大必要，准备删了先注释掉了
 arr_dbg1(arr)
 arr_dbg2(arr)
 arr_dbg3(arr)
@@ -67,6 +70,48 @@ arr_swap_key_var(arr)
 	return ret
 }
 
+arr_print(array)
+{
+	/*
+	返回一个字符串形式的数组
+	形式与ahk的定义形式相同
+	[items*, [items*], {key: value}, ……]
+	*/
+	ret := ""
+	switch type(array)
+	{
+		case "Array":
+			ret .= "["
+			for _, v in array
+			{
+				if IsObject(v)
+					ret .= arr_print(v) . ", "
+				else if type(v) == "String"
+					ret .= """" . v . """" . ", "
+				else
+					ret .= v . ", "
+			}
+			ret := SubStr(ret, 1, -2)
+			ret .= "]"
+		case "Associative Array":
+			ret .= "{"
+			for k,v in array
+			{
+				if IsObject(v)
+					ret .= """" . k . """" . ": " . arr_print(v) . ", "
+				else if type(v) == "String"
+					ret .= """" . k . """" . ": " . """" . v . """" . ", "
+				else
+					ret .= """" . k . """" . ": " . v . ", "
+			}
+			ret := SubStr(ret, 1, -2)
+			ret .= "}"
+		Default:
+			Throw Exception("Invaild Value! Need an array, but pass a(n) " . type(array), -1)
+	}
+	return ret
+}
+/*
 arr_dbg1(arr)
 {
 	/*
@@ -213,3 +258,5 @@ arr_dbg3(arr, crtPos := 0)
     }
     return ret
 }
+*/
+
