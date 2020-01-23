@@ -77,6 +77,7 @@ arr_print(array)
 	形式与ahk的定义形式相同
 	[items*, [items*], {key: value}, ……]
 	*/
+	local
 	ret := ""
 	switch type(array)
 	{
