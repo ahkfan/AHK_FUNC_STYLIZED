@@ -4,7 +4,7 @@
 class Ini 
 {
     ; 允许在连续的调用中省略不写 filename，此时的 filename 为上一次时操作的 filename 值
-    filename := ""
+    static filename := ""
 
     Read(filename, section := "", key := "")
     {

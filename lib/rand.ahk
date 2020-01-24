@@ -39,7 +39,7 @@ class Rand
         if a is digit
             Random, , a
         else
-            Throw Exception("Seed must be an integer", A_ThisFunc)
+            Throw Exception("Seed must be an integer", -1)
         Return this         ; 允许用rand.seed().method()调用
     }
 
@@ -48,18 +48,18 @@ class Rand
     Rand(min := 0, max := 2147483647)
     {
         ; 这个方法也允许浮点数
-        out := 0
+        out := -1
         Random, out, min, max
         Return out
     }
 
-    RandRange(min, max, step := 1)
+    RandRange(min := 0, max := 2147483647, step := 1)
     {
         ; 返回从"max"到"min"之间的一随机数，间隔为"step"
         ; 只能使用整数
-        if min is not digit or max is not digit
-            Throw Exception("Min and Max must be an integer", A_ThisFunc)
-        out := 0
+        if !(min is digit) or !(max is digit)
+            Throw Exception("Min and Max must be an integer", -1)
+        out := -1
         Random, out, 0, (max-min) // step
         Return min + out * step
     }
@@ -89,7 +89,7 @@ class Rand
 				i := this.Rand(1, StrLen(source))
             	Return SubStr(source, i, 1)
 			Default:
-				Throw Exception("Source must an object with lenght", A_ThisFunc)
+				Throw Exception("Source must an object with lenght", -1)
 		} 
     }
 
@@ -112,7 +112,7 @@ class Rand
 				}
 				Return s2
 			Default:
-				Throw, Exception("Source must be an unempty simple array, not an empty array or associative arrays.", A_ThisFunc)
+				Throw, Exception("Source must be an unempty simple array, not an empty array or associative arrays.", -1)
 		}
         /*
         byref 版
@@ -135,7 +135,7 @@ class Rand
     {
         l := this._getLength(source)
         if num >= l or num <= 0
-            Throw Exception("Sample larger than source or is negative", A_ThisFunc)
+            Throw Exception("Sample larger than source or is negative", -1)
 
         ; 这个情况区分的部分是什么道理我也不知道，python官方是这么写的LOL
         result := []

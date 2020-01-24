@@ -11,6 +11,8 @@ arr_dbg2(arr)
 arr_dbg3(arr)
 */
 
+; #Include type.ahk
+
 arr_cpy(arr)
 {
 	/*
@@ -33,15 +35,30 @@ arr_cpy(arr)
 			ClipBoard := (a.abc.ddd) "-" (b.abc.ddd)
 			;剪切板文本: 555-222
 	*/
-
-	if not isobject(arr) {
-		ret := arr
-	} else {
-		ret := {}
-		for k, v in arr
-			ret[k] := arr_cpy(v)
+	local
+	switch type(arr)
+	{
+		case "Array":
+			ret := []
+			for _,v in arr
+			{
+				if IsObject(arr)
+					ret.Push(arr_cpy(ret))
+				ret.Push(v)
+			}
+		case "Associative Array":
+			ret := {}
+			for k,v in arr
+			{
+				if IsObject(arr)
+					ret[k] := arr_cpy(ret)
+				ret[k] := v
+			}
+		Default:
+			Throw Exception("Invaild Value! Need an array, but pass a(n) " . type(array), -1)
 	}
 	return ret
+	
 }
 
 arr_swap_key_var(arr)
@@ -64,6 +81,9 @@ arr_swap_key_var(arr)
 
 
 	*/
+	local
+	if type(arr) != "Associative Array"
+		Throw Exception("Invaild Value! Need an associative array, but pass a(n) " . type(array), -1)
 	ret := {}
 	for key, var in arr
 		ret[var] := key
