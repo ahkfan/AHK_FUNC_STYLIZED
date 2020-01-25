@@ -1,4 +1,4 @@
-#Include Yunit.ahk
+#Include %A_ScriptDir%\Yunit.ahk
 
 Yunit.Use(YunitStdOut).Test(NumberTestSuite, StringTestSuite)
 

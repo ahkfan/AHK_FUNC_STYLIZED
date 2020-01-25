@@ -1,7 +1,12 @@
 ﻿; LIB OF DEBUG
 ; 暂时搁置
 
-class Cdbg
+dbg()
+{
+    return __CLASS_AHKFS_DEBUG
+}
+
+class __CLASS_AHKFS_DEBUG
 {
     Out(text)
     {
@@ -24,7 +29,4 @@ class Cdbg
             Pause
         Return this
     }
-
-
-
 }
