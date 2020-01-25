@@ -1,5 +1,6 @@
-﻿msgbox, % math().calc("1*2+3")
+﻿/* math := math() 数学函数
 
+*/
 
 math()
 {
@@ -14,9 +15,11 @@ class __CLASS_AHKFS_MATH
 
         简介: 输出字符串表达式的计算结果
 
-        起源:       c-labeled functions by Laszlo: http://www.autohotkey.com/forum/topic17058.html
+        起源:       Laszlo      : http://www.autohotkey.com/forum/topic17058.html
         原作者:     derRaphael
         Bug修正:    Lv2
+
+        ;msgbox, % math().calc("1*2+3")
         
         */
         static  f := "sqrt|log|ln|exp|sin|cos|tan|asin|acos|atan|rad|deg|abs", c := "fib|gcb|min|max|sgn"
