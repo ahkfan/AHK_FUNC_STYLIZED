@@ -1,28 +1,27 @@
-﻿;~窗口
-
+﻿/*
 win := win()
-msgbox, % obj_dbg2(win.GetAttrs("ahk_id 0xc0890"))
+*/
+
 
 win()
 {
     return __ClASS_AHKFS_WINDOW
 }
 
-
 class __ClASS_AHKFS_WINDOW
 {
-
+    ;--------------------------------------------
     class msg
     {
-
+        
     }
-
+    ;--------------------------------------------
     class op
     {
 
     }
     ;--------------------------------------------
-    HwndFormat(hwnd)
+    HwndFormat(hwnd)        ;~ win.HwndFormat()
     {
         /*
         简介:   将传入的窗口句柄格式化
@@ -36,29 +35,49 @@ class __ClASS_AHKFS_WINDOW
         else
             return ""
     }
-
     ;--------------------------------------------
-    GetAttrs(hwnd)
-    {   ;~ todo: 相对客户区的坐标和尺寸
+    GetAttrs(hwnd)          ;~ win.GetAttrs()
+    {                       ;~ todo: 相对客户区的坐标和尺寸
 
         /*
         简介:   获取窗口大部分可用属性
 
         参1:    hwnd   {UInt}    窗口句柄
 
-        返回值: {Object / String} 窗口属性 / 字符串错误提示
-                1. "error form [" hwnd "]"  窗口格式错误
-                2. "WinNotExist"            窗口不存在
+        返回值: {Object / String} 窗口属性 / 错误
+                1. 0                        窗口格式错误
+                2. ""                       窗口不存在
                 3. {Object}                 窗口的某些属性
+                    {
+                        "isActive"      : {Boolean}
+                        "isMax"         : {Boolean}
+                        "isMin"         : {Boolean}
+                        "isFloat"       : {Boolean}
+                        "title"         : {String}
+                        "class"         : {String}
+                        "text"          : {String}
+                        "process"       : {String}
+                        "path"          : {String}
+                        "pid"           : {UInt / ""}
+                        "transparent"   : {UInt / ""}
+                        "transcolor"    : {Uint}
+                        "style"         : {UInt}
+                        "exstyle"       : {UInt}
+                        "childs"        : {Array} 例: [{"class": "CLSName", "hwnd": 0x123}, {"class": "CLSName2", "hwnd": 0x567}]
+                        "w"             : {UInt}
+                        "h"             : {UInt}
+                        "x"             : {Int}
+                        "y"             : {Int}
+                    }
         */
         
         if ((_hwnd := this.hwndFormat(hwnd)) = "")
         {
-            return "error form [" hwnd "]"
+            return 0
         }
         if not WinExist(_hwnd)
         {
-            return "WinNotExist"
+            return ""
         }
         ret := {}
         WinGetPos, x, y, w, h, % _hwnd
@@ -74,7 +93,12 @@ class __ClASS_AHKFS_WINDOW
         WinGet, exstyle		    , ExStyle		, % _hwnd
         WinGet, controlList		, ControlList   , % _hwnd
         WinGet, ControlListHwnd	, ControlListHwnd  , % _hwnd
+        WinGet, MinMax          , MinMax        , % _hwnd
 
+        ret.isActive        := WinActive(_hwnd) ? true : false
+        ret.isMax           := (MinMax = 1)     ? true : false
+        ret.isMin           := (MinMax = -1)    ? true : false
+        ret.isFloat         := (MinMax = 0)     ? true : false
         ret.title           := tilte
         ret.class           := className
         ret.text            := text
@@ -89,38 +113,17 @@ class __ClASS_AHKFS_WINDOW
         ret.y               := y
         ret.w               := w
         ret.h               := h
-
-        ret.OpList          := []   ;~ 返回单位元素为 {"class": "", "hwnd": ""} 的列表
+        ret.childs          := []   ;~ 返回单位元素为 {"class": "", "hwnd": ""} 的列表
         loop, parse, ControlList, `n
         {
             ControlGet, hwndOp, hwnd, , % A_LoopField, % _hwnd
-            ret.OpList.push({"class": A_LoopField, "hwnd": hwndOp})
+            ret.childs.push({"class": A_LoopField, "hwnd": hwndOp})
         }
         return ret
     }
-
-    findHwnd(filter := "")
+    ;--------------------------------------------
+    FindHwndBy(filter)      ;~ win.FindHwnd()
     {
-        /*
-        简介: 查找符合条件的窗口, 返回单个窗口句柄
 
-        原型: winget, v, list
-
-        参1: filter {Object} , 可选以下键值对
-
-            title   : {String}  "标题"
-            class   : {String}  "类名"
-            exe     : {String}  "进程名称.exe"
-            pid     : {UInt}    进程pid
-            path    : {String}  "进程完整路径"
-            style   : {UInt}
-            exstyle : {UInt}
-            wW      : {UInt}    窗口宽度
-            wH      : {UInt}    窗口高度
-            cW      : {UInt}    窗口客户区宽度
-            cH      : {UInt}    窗口客户区高度
-            
-        返回值: Hwnd 窗口句柄
-        */
     }
 }
