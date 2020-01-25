@@ -2,7 +2,7 @@
 
 web()
 {
-	return 
+	return __CLASS_AHKFS_WEB
 }
 
 class __CLASS_AHKFS_WEB
