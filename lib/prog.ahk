@@ -26,7 +26,6 @@ class __CLASS_AHKFS_PROGRAM
     {
         EnvUpdate
     }
-    
     ;--------------------------------------
     Run(Target , WorkingDir := "", Options := "")
     {
@@ -37,7 +36,6 @@ class __CLASS_AHKFS_PROGRAM
 
         return OutputVarPID
     }
-
     ;--------------------------------------
     RunWait(Target , WorkingDir := "", Options := "")
     {
@@ -45,10 +43,8 @@ class __CLASS_AHKFS_PROGRAM
             RunWait, % Target , % WorkingDir, % Options, OutputVarPID
         else
             RunWait, % Target , % WorkingDir, , OutputVarPID
-
         return OutputVarPID
     }
-
     ;--------------------------------------
     RunAs(User, Password, Domain)
     {
@@ -57,7 +53,6 @@ class __CLASS_AHKFS_PROGRAM
         else
             RunAs, % User, % Password, % Domain
     }
-
     ;--------------------------------------
     SetWorkingDir(DirPath)
     {
