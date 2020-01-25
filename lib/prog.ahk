@@ -1,5 +1,6 @@
 ﻿; LIB OF PROGRAM ENV 
 
+
 prog()
 {
     return __CLASS_AHKFS_PROGRAM
