@@ -1,15 +1,15 @@
 ﻿;~窗口
-win := win()
-msgbox, % win.hwndFormat("ahk_id 0x123")
 
+win := win()
+msgbox, % obj_dbg2(win.GetAttrs("ahk_id 0xc0890"))
 
 win()
 {
-    return __Class_Window
+    return __ClASS_AHKFS_WINDOW
 }
 
 
-class __Class_Window
+class __ClASS_AHKFS_WINDOW
 {
 
     class msg
@@ -22,7 +22,7 @@ class __Class_Window
 
     }
     ;--------------------------------------------
-    hwndFormat(hwnd)
+    HwndFormat(hwnd)
     {
         /*
         简介:   将传入的窗口句柄格式化
@@ -35,17 +35,16 @@ class __Class_Window
             return "ahk_id " ret
         else
             return ""
-        
     }
 
     ;--------------------------------------------
-    getAttrs(hwnd, KeyLs := "")
-    {
+    GetAttrs(hwnd)
+    {   ;~ todo: 相对客户区的坐标和尺寸
+
         /*
         简介:   获取窗口大部分可用属性
 
         参1:    hwnd   {UInt}    窗口句柄
-        参2:    KeyLs  {Array}   可空, 可只选择部分需要返回的属性
 
         返回值: {Object / String} 窗口属性 / 字符串错误提示
                 1. "error form [" hwnd "]"  窗口格式错误
@@ -62,36 +61,40 @@ class __Class_Window
             return "WinNotExist"
         }
         ret := {}
-        if (KeyLs = "")     ;~ 获取所有属性
-        {
-            WinGetPos, x, y, w, h, % _hwnd
-            WinGetTitle, tilte		, % _hwnd
-            WinGetClass, className	, % _hwnd
-            WinGet, ProcessName	    , ProcessName	, % _hwnd
-            WinGet, transparent	    , Transparent	, % _hwnd
-            WinGet, transcolor	    , transcolor	, % _hwnd
-            WinGet, ProcessPath	    , ProcessPath	, % _hwnd
-            WinGet, pid			    , PID			, % _hwnd
-            WinGet, style		    , Style			, % _hwnd
-            WinGet, exstyle		    , ExStyle		, % _hwnd
-           
-            ret.title           := tilte
-            ret.class           := className
-            ret.exe             := ProcessName
-            ret.transparent     := transparent
-            ret.path            := ProcessPath
-            ret.pid             := pid
-            ret.style           := style
-            ret.exstyle         := exstyle
-            ret.x               := x
-            ret.y               := y
-            ret.w               := w
-            ret.h               := h
+        WinGetPos, x, y, w, h, % _hwnd
+        WinGetTitle, tilte		, % _hwnd
+        WinGetClass, className	, % _hwnd
+        WinGetText , text       , % _hwnd
+        WinGet, ProcessName	    , ProcessName	, % _hwnd
+        WinGet, transparent	    , Transparent	, % _hwnd
+        WinGet, transcolor	    , transcolor	, % _hwnd
+        WinGet, ProcessPath	    , ProcessPath	, % _hwnd
+        WinGet, pid			    , PID			, % _hwnd
+        WinGet, style		    , Style			, % _hwnd
+        WinGet, exstyle		    , ExStyle		, % _hwnd
+        WinGet, controlList		, ControlList   , % _hwnd
+        WinGet, ControlListHwnd	, ControlListHwnd  , % _hwnd
 
-        }
-        else
-        {
+        ret.title           := tilte
+        ret.class           := className
+        ret.text            := text
+        ret.process         := ProcessName
+        ret.path            := ProcessPath
+        ret.pid             := pid
+        ret.transparent     := transparent
+        ret.transcolor      := transcolor
+        ret.style           := style
+        ret.exstyle         := exstyle
+        ret.x               := x
+        ret.y               := y
+        ret.w               := w
+        ret.h               := h
 
+        ret.OpList          := []   ;~ 返回单位元素为 {"class": "", "hwnd": ""} 的列表
+        loop, parse, ControlList, `n
+        {
+            ControlGet, hwndOp, hwnd, , % A_LoopField, % _hwnd
+            ret.OpList.push({"class": A_LoopField, "hwnd": hwndOp})
         }
         return ret
     }

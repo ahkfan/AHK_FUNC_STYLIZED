@@ -7,15 +7,16 @@ arr.cpy(arr)
 arr.swapKeyVar(arr)
 
 arr.print(arr)
+
 */
 
 
 arr()
 {
-	return __ClASS_AHKFS_ARR
+	return __ClASS_AHKFS_ARRAY
 }
 
-class __ClASS_AHKFS_ARR
+class __ClASS_AHKFS_ARRAY
 {
 	;-------------------------------------------
 	cpy(arr)
