@@ -40,7 +40,7 @@ m_move(x, y, slep := 0)
 	Sleep, % slep
 }
 
-m_move_comp(x, y, slep := 0)
+m_move_relative(x, y, slep := 0)
 {
 	/*
 	简介: 相对当前鼠标位置移动

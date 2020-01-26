@@ -18,7 +18,6 @@ arr()
 
 class __ClASS_AHKFS_ARRAY
 {
-	;-------------------------------------------
 	cpy(arr)
 	{
 		/*
@@ -29,7 +28,7 @@ class __ClASS_AHKFS_ARRAY
 			返回值:		(object)	返回对象与源对象无引用关系
 		*/
 		local
-		switch type(arr)
+		switch fstype(arr)
 		{
 			case "Array":
 				ret := []
@@ -48,12 +47,11 @@ class __ClASS_AHKFS_ARRAY
 					ret[k] := v
 				}
 			Default:
-				Throw Exception("Invaild Value! Need an array, but pass a(n) " . type(arr), -1)
+				Throw Exception("Invaild Value! Need an array, but pass a(n) " . fstype(arr), -1)
 		}
 		return ret
 	}
 
-	;-------------------------------------------
 	swapKeyVar(arr)
 	{
 		/*
@@ -64,15 +62,14 @@ class __ClASS_AHKFS_ARRAY
 			返回值: {Array}
 		*/
 		local
-		if type(arr) != "Associative Array"
-			Throw Exception("Invaild Value! Need an associative array, but pass a(n) " . type(array), -1)
+		if fstype(arr) != "Associative Array"
+			Throw Exception("Invaild Value! Need an associative array, but pass a(n) " . fstype(array), -1)
 		ret := {}
 		for key, var in arr
 			ret[var] := key
 		return ret
 	}
 
-	;-------------------------------------------
 	print(arr)
 	{
 		/*
@@ -81,7 +78,7 @@ class __ClASS_AHKFS_ARRAY
 		*/
 		local
 		ret := ""
-		switch type(arr)
+		switch fstype(arr)
 		{
 			case "Array":
 				ret .= "["
@@ -89,7 +86,7 @@ class __ClASS_AHKFS_ARRAY
 				{
 					if IsObject(v)
 						ret .= arr_print(v) . ", "
-					else if type(v) == "String"
+					else if fstype(v) == "String"
 						ret .= """" . v . """" . ", "
 					else
 						ret .= v . ", "
@@ -102,7 +99,7 @@ class __ClASS_AHKFS_ARRAY
 				{
 					if IsObject(v)
 						ret .= """" . k . """" . ": " . arr_print(v) . ", "
-					else if type(v) == "String"
+					else if fstype(v) == "String"
 						ret .= """" . k . """" . ": " . """" . v . """" . ", "
 					else
 						ret .= """" . k . """" . ": " . v . ", "
@@ -110,9 +107,8 @@ class __ClASS_AHKFS_ARRAY
 				ret := SubStr(ret, 1, -2)
 				ret .= "}"
 			Default:
-				Throw Exception("Invaild Value! Need an array, but pass a(n) " . type(arr), -1)
+				Throw Exception("Invaild Value! Need an array, but pass a(n) " . fstype(arr), -1)
 		}
 		return ret
 	}
-	;-------------------------------------------
 }

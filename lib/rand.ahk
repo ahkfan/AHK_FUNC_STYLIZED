@@ -7,7 +7,7 @@ rand_shuffle(source) pass
 rand_sample(source, num)
 */
 
-; #Include type.ahk		Put this file in lib or include it
+; #Include fstype.ahk		Put this file in lib or include it
 
 class Rand
 {
@@ -71,7 +71,7 @@ class Rand
         ; 随机返回一个在"source"中的元素，字符串时为一个字符
 		; 只支持 ahk v1.1.31+
 
-		switch type(source)
+		switch fstype(source)
 		{
 			case "Array":
 				i := this.Rand(1, source.Length())
@@ -99,7 +99,7 @@ class Rand
 		; 只支持 ahk v1.1.31+
 		; Fisher–Yates Shuffle
         s2 := New source                    ; 用原型链防止操作影响 source 
-		switch type(source)
+		switch fstype(source)
 		{
 			case "Array":
 				l := source.Length()
