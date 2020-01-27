@@ -1,21 +1,22 @@
-; Modified from Yunit, make it fit to ahk ver 1.3
+﻿; Modified from Yunit, make it fit to ahk ver 1.3
 ; Simple Yunit
 
 class YunitStdOut
 {
-    Update(Category, Test, Result) ;wip: this only supports one level of nesting?
+    Update(Category, Test, Result) ;wip: this only supports one level of nesting? - 这个只支持一个层级的嵌套
     {
         if IsObject(Result)
         {
-            Details := " at line " Result.Line " " Result.Message
-            Status := "FAIL"
+            Details := "- 行数(" Result.Line ")- 讯息:[" Result.Message "] -"
+            Status := "[失败]"
         }
         else
         {
             Details := ""
-            Status := "PASS"
+            Status := "[通过]"
         }
-        FileAppend, % Status ": " Category "." Test " " Details "`n", *
+
+        FileOpen(A_ScriptFullPath ".txt", "a").write(Status ": " Category "." Test " " Details "`r`n")
     }
 }
 
@@ -105,7 +106,7 @@ class Yunit
     }
     
     CompareValues(v1, v2)
-    {   ; Support for simple exceptions. May need to be extended in the future.
+    {   
         if !IsObject(v1) || !IsObject(v2)
             return v1 = v2   ; obey StringCaseSense
         if !ObjHasKey(v1, "Message") || !ObjHasKey(v2, "Message")
