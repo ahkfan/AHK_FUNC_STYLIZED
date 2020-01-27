@@ -1,0 +1,14 @@
+﻿
+[通过]: NumberTestSuite.Test_Division 
+[通过]: NumberTestSuite.Test_Multiplication 
+[通过]: NumberTestSuite.Test_Sum 
+[通过]: NumberTestSuite.Negatives.Test_Division 
+[失败]: NumberTestSuite.Negatives.Test_Fails - 行数(61)- 讯息:[oops!] -
+[失败]: NumberTestSuite.Negatives.Test_Fails_NoMessage - 行数(66)- 讯息:[FAIL] -
+[通过]: NumberTestSuite.Negatives.Test_Multiplication 
+[通过]: NumberTestSuite.Negatives.Test_Sum 
+[通过]: StringTestSuite.Test_Concat 
+[失败]: StringTestSuite.Test_ExpectedException_Fail - 行数(80)- 讯息:[ExpectedException] -
+[通过]: StringTestSuite.Test_ExpectedException_Success 
+[通过]: StringTestSuite.Test_InStr 
+[通过]: StringTestSuite.Test_Substring 

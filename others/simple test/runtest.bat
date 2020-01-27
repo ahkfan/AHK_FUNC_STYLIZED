@@ -1,7 +1,8 @@
 @echo off
 cls
 
-rem 灏咵xample.ahk鎹㈡垚闇�瑕佺殑娴嬭瘯鏂囦欢
+rem 将Example.ahk换成需要的测试文件
+
 "C:\Program Files\AutoHotkey\AutoHotkey.exe" Example.ahk | python colorfulout.py
 
 echo.
