@@ -1,6 +1,11 @@
 ﻿; LIB OF INI
 ; 未经测试
 
+fsini()
+{
+    Return new __CLASS_AHKFS__INI
+}
+
 class __CLASS_AHKFS__INI 
 {
     __New()
@@ -101,7 +106,3 @@ class __CLASS_AHKFS__INI
     }
 }
 
-fsini()
-{
-    Return new __CLASS_AHKFS__INI
-}
