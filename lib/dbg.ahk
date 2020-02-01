@@ -8,6 +8,7 @@ dbg()
 
 class __CLASS_AHKFS_DEBUG
 {
+
     Out(text)
     {
         ; text must be a string

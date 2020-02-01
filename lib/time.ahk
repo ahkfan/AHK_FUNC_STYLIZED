@@ -16,6 +16,7 @@ time_s(mSec, byref t, byref t0 := 0)
 
 	返回值: 执行到期返回false, tm值设还为0, 未到期返回true
 
+
 	*/
 
 	if (not t > 0)
