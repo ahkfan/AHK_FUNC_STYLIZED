@@ -16,66 +16,34 @@
          不支持判断 Inf -Inf NaN 等特殊的浮点类型，这些浮点类型应该会被当成字符串类型
 */
 
-; 改了，还没再次测试
-
 
 fstype(obj)
 {
+    local objCount
     if IsObject(obj)
     {
         if obj.haskey("__class")
-            return "Object: <Class=" obj.__class ">"
-        objCount := obj.count(), objLen := obj.Length()
+            return "Class=" obj.__class ""
+            
+        objCount := obj.count()
         if (objCount = 0)
-            return "Object: <Empty>"
-        else if (objLen = 0)
-            return "Object: <Associative Array>"
-        else if (objCount = objLen)
-            return "Object: <Array>"
+            return "Array"
+        else if (objCount == obj.Length() && obj.MinIndex() == 1)
+            return "Array"
         else 
-            return "Object: <Mixture>"
+            return "Associative Array"
     }
     else
     {
-        if (obj = "")
-            return "<None>"
+        if (obj == "")
+            return "None"
 
-        if ((1 | obj) = "")
-            return "<String>"
+        if ((1 | obj) == "")
+            return "String"
         else
             if instr(obj, ".")
-                return "<Float>"
+                return "Float"
             else
-                return "<Integer>"
+                return "Integer"
     }
 }
-
-/*
-
-fstype(obj)
-{
-    ; for v2
-    if SubStr(A_AhkVersion, 1, 1) >= 2
-
-        if type(obj) != "Class"
-            return type(obj)
-        else
-            Goto V1AssertArray
-    ; for v1
-    if IsObject(obj)
-	{
-        if obj.__class
-            while obj := obj.base
-            {
-                if !obj.__class
-                    return obj.__Class
-            }
-        V1AssertArray:
-		if ObjGetCapacity(obj)>ObjCount(obj)
-            return "Associative Array"
-		else
-			return "Array"
-	}
-    return obj="" || [obj].GetCapacity(1) ? "String" : InStr(obj,".") ? "Float" : "Integer"
-}
-*/
