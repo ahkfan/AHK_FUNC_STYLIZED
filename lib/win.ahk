@@ -58,9 +58,9 @@ class __ClASS_AHKFS_WINDOW
                         "text"          : {String}
                         "process"       : {String}
                         "path"          : {String}
-                        "pid"           : {UInt / ""}
+                        "pid"           : {UInt}
                         "transparent"   : {UInt / ""}
-                        "transcolor"    : {Uint}
+                        "transcolor"    : {Uint / ""}
                         "style"         : {UInt}
                         "exstyle"       : {UInt}
                         "childs"        : {Array} 例: [{"class": "CLSName", "hwnd": 0x123}, {"class": "CLSName2", "hwnd": 0x567}]
