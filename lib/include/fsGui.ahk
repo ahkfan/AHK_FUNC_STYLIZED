@@ -5,7 +5,11 @@ Gui, show
 a := 0
 return
 
-f1::e.text := (a += 1)
+class fsGui
+{
+
+}
+
 
 
 class fsEdit

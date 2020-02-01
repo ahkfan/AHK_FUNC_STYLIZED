@@ -18,11 +18,45 @@
 
 ; 改了，还没再次测试
 
+
+fstype(obj)
+{
+    if IsObject(obj)
+    {
+        if obj.haskey("__class")
+            return "Object: " obj.__class
+        objCount := obj.count(), objLen := obj.Length()
+        if (objCount = 0)
+            return "Object: <Empty>"
+        else if (objLen = 0)
+            return "Object: <Associative Array>"
+        else if (objCount = objLen)
+            return "Object: <Array>"
+        else 
+            return "Object: <Mixture>"
+    }
+    else
+    {
+        if (obj = "")
+            return "<None>"
+
+        if ((1 | obj) = "")
+            return "<String>"
+        else
+            if instr(obj, ".")
+                return "<Float>"
+            else
+                return "<Integer>"
+    }
+}
+
+/*
+
 fstype(obj)
 {
     ; for v2
     if SubStr(A_AhkVersion, 1, 1) >= 2
-        ; 如果是内置的类那么使用v1的判断方法
+
         if type(obj) != "Class"
             return type(obj)
         else
@@ -30,7 +64,6 @@ fstype(obj)
     ; for v1
     if IsObject(obj)
 	{
-        ; 这里也许更应该返回基对象本身
         if obj.__class
             while obj := obj.base
             {
@@ -45,3 +78,4 @@ fstype(obj)
 	}
     return obj="" || [obj].GetCapacity(1) ? "String" : InStr(obj,".") ? "Float" : "Integer"
 }
+*/

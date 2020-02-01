@@ -41,7 +41,6 @@ class __ClASS_AHK
                                 ,  Pid:  Int
                                 ,  hwnd: Int}
 
-
             ;~ 另外可参考
             lsAllProcess := []
             for process in ComObjGet("winmgmts:").ExecQuery("Select * from Win32_Process WHERE Name LIKE 'Autohotkey%'")
