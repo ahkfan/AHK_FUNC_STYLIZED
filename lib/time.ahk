@@ -16,19 +16,6 @@ time_s(mSec, byref t, byref t0 := 0)
 
 	返回值: 执行到期返回false, tm值设还为0, 未到期返回true
 
-	示例:
-
-		;~ ex 1.
-
-		t := 0
-		while (time_s(5000, t, t0))
-		{
-			;ToolTip, % "剩余: " t0 " 毫秒"
-			;ToolTip, % "剩余: " format("{:.3f}", t0 / 1000) " 秒"
-			ToolTip, % "剩余: " t0 // 1000 + 1 " 秒"
-		}
-		MsgBox, % t
-
 	*/
 
 	if (not t > 0)

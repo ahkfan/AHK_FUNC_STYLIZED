@@ -24,7 +24,7 @@ fstype(obj)
     if IsObject(obj)
     {
         if obj.haskey("__class")
-            return "Object: " obj.__class
+            return "Object: <Class=" obj.__class ">"
         objCount := obj.count(), objLen := obj.Length()
         if (objCount = 0)
             return "Object: <Empty>"

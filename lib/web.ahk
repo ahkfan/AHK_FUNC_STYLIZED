@@ -37,7 +37,7 @@ class __CLASS_AHKFS_WEB
 	Class JSON
 	{
 		;-----------------------------------------
-		FromObj( obj )		;~ Web.JSON.FromObj(Object)
+		FromObj( obj )			;~ Web.JSON.FromObj(Object)
 		{
 			/*
 			简介: 	将autohotkey关联数组转换为json字符串
