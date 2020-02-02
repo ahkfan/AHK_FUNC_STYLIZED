@@ -1,5 +1,6 @@
 ﻿; LIB OF INI
-; 未经测试
+; __CLASS_AHKFS__INI __set pass
+; other no pass yet
 
 fsini()
 {
@@ -10,24 +11,19 @@ class __CLASS_AHKFS__INI
 {
     __New()
     {
-        IniAST := {}
+        IniAST := new __CLASS_AHKFS__INIAST__
         ObjRawSet(this, "IniAST", IniAST)
     }
 
-    __Set(section, key, value)
+    __Set(section, pairs := "")
     {
-        this.IniAST[section, key] := value
+        this.IniAST[section] := pairs
         Return this
     }
 
-    __Get(section := "", key := "")
+    __Get(section)
     {
-        if key
-            Return this.IniAST[section, key]
-        else if section
-            Return this.IniAST[section]
-        else
-            Return this.IniAST
+        return this.IniAST[Section]
     }
 
     GetAllSection()
@@ -40,13 +36,9 @@ class __CLASS_AHKFS__INI
 
     Delete(section, key := "")
     {
-        if filename == ""
-            filename := this,filename
-        Else
-            this.filename := filename
-        
-        IniDelete, Filename, Section , Key
-        Return this
+        if (key == "")
+            this.IniAST.delete(section)
+        this.IniAST[Section].delete(key)
     }
 
     Write(filename)
@@ -87,7 +79,7 @@ class __CLASS_AHKFS__INI
                 currentSection := SubStr(Contain, 2, -1)
                 ; Section should be unique
                 if this.IniAST.HasKey(currentSection)
-                    Throw Exception("Duplicate section!")
+                    Throw Exception("Duplicated section!")
             }
             ; key and value
             else
@@ -106,3 +98,80 @@ class __CLASS_AHKFS__INI
     }
 }
 
+; Inner AST class, do not call it directly!
+class __CLASS_AHKFS__INIAST__
+{
+    ; TODO: finish class pairs and make AST fit to it
+    
+    ; Inner PAIRS class, do not call it directly!
+    class __PAIRS__
+    {
+        ; 只为每一个 section 建立一个 pairs 类
+        __New(pairs)
+        {
+            for key, val in pairs
+                this.key := val
+        }
+        __Set(key, val*)
+        {
+            ; check set is correct or not
+            ; only allow "(str)key: (str)val"
+            if IsObject(val)
+                throw Exception("value of a key must be a string", -1)
+            ObjRawSet(this, key, val)
+            return
+        }
+        __Get()
+        {
+            ; 我在这个地方抛异常是不是就不用管 key 不存在的问题了
+            throw Exception("Get non-exist key!", -1)
+        }
+    }
+
+    __Set(Section, pairs := "")
+    {
+        ; To set when section is ""
+        if (section == "")
+        {
+            if IsObject(pairs)
+            {
+                for Asection, Apairs in this
+                {
+                    for key, val in Apairs
+                    {
+                        if (pairs.HasKey(key))
+                        {
+                            ObjRawSet(this, ASection, Object(key, val))
+                            return this
+                        }
+                    }
+                }
+            }
+            throw Exception("Set Non-exist key!", -1, "If you want to set a key, make sure it is under an exist seciton.")
+        }
+        ObjRawSet(this, Section, new this.__PAIRS__(pairs))
+        return this
+    }
+    
+    __Get(Section, pairs := "")
+    {
+        ; To get when section is ""
+        if (section == "")
+        {
+            if IsObject(pairs)
+            {
+                for section, Apairs in this
+                {
+                    for key, val in Apairs
+                    {
+                        if (pairs.HasKey(key))
+                            return val
+                    }
+                }
+            }
+            throw Exception("Get non-exist key!", -1)
+        }
+        throw Exception("Get non-exist section!", -1)
+    }
+}
+    
