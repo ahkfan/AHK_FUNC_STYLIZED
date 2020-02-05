@@ -1,34 +1,81 @@
-﻿
-e := new fsEdit({text: "abc"})
-
-Gui, show
-a := 0
-return
-
+﻿;~ 未完
 class fsGui
+{
+    static name  := "fsGui_"
+    static index := 0
+
+    ahk_id[]
+    {
+        get {
+            return ("ahk_id " this.hwnd)
+        }
+        set {
+            MsgBox, % "Can't not set values for 'ahk_id'"
+        }
+    }
+    ;------------------------- new -------------------------
+    __New(title := "", options := "")
+    {
+        this.index  := (fsGui.index += 1)
+        this.name   := this.name this.index ":"
+
+        Gui, % this.name "+hwnd@fsGuiHwnd"
+        Gui, % this.name "show"
+        this.hwnd   := @fsGuiHwnd
+
+        this.title  := (title == "") ? this.name : title
+        this.childs := []
+        for i, option in options
+        {
+            ;~ TODO
+        }
+    }
+
+    ;------------------------- show | hide | destroy  -------------------------
+    show()
+    {
+        Gui, % this.name "show", , % this.title
+    }
+    hide()
+    {
+        Gui, % this.name "hide"
+    }
+    destroy()
+    {
+        this.__Delete()
+    }
+    __Delete()
+    {
+        for i, ops in this.childs
+            ops.__Delete()
+        Gui, % this.name "destroy"
+    }
+
+    ;------------------------- add controls -------------------------
+    newOP(OPType, options)
+    {
+
+    }
+
+    class Operation
+    {
+;-------------------------  -------------------------
+class Button
 {
 
 }
-
-
-
-class fsEdit
+class Edit
 {
-    text[]
-    {
-        get
-        {
-            return this._text
-        }
-        set
-        {
-            GuiControl, , % this.hwnd, % this._text := value
-        }
-    }
-    __New(option)
-    {
-        Gui, add, edit, hwnd@Edit, % option.text
-        this.hwnd := @Edit
-        this._text := option.text
+
+}
+class ListBox
+{
+
+}
+class ListView
+{
+
+}
+;-------------------------  -------------------------
     }
 }
