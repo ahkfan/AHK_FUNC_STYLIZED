@@ -1,14 +1,13 @@
 ﻿;~ auto execute
 "".base.base := __CLASS_FS_STRING_EXTEND    
 
-
 class __CLASS_FS_STRING_EXTEND 
 {
     ;-------------------------  -------------------------
 	__Call(method, args*) 
     {
 		static  _ := __CLASS_FSSTRINGEXBASE.Function_Call
-		if ( (method == "") or !_.haskey(method) ) 
+		if not _.haskey(method)
         {
 			return ""
 		}
@@ -16,14 +15,15 @@ class __CLASS_FS_STRING_EXTEND
 	}
 
 	;-------------------------  -------------------------
-	__Get(key) 
+	__Get(property) 
     {
 		static _ := __CLASS_FSSTRINGEXBASE.Property_Get
-		if ( (key == "") or !_.haskey(key) ) 
+		if not _.haskey(key)
         {
+            msgbox, 123
 			return ""
 		}
-		return _[key](this)
+		return _[property](this)
 	}
 	/*
     ;-------------------------  -------------------------
