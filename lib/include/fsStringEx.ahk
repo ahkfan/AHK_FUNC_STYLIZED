@@ -1,12 +1,18 @@
 ﻿;~ auto execute
 "".base.base := __CLASS_FS_STRING_EXTEND    
 
+;msgbox, % "abc".len
+
+
+
+
+
 class __CLASS_FS_STRING_EXTEND 
 {
     ;-------------------------  -------------------------
 	__Call(method, args*) 
     {
-		static  _ := __CLASS_FSSTRINGEXBASE.Function_Call
+		static _ := __CLASS_FS_STRING_EXTEND.Method_Call
 		if not _.haskey(method)
         {
 			return ""
@@ -17,10 +23,10 @@ class __CLASS_FS_STRING_EXTEND
 	;-------------------------  -------------------------
 	__Get(property) 
     {
-		static _ := __CLASS_FSSTRINGEXBASE.Property_Get
-		if not _.haskey(key)
+		static _ := __CLASS_FS_STRING_EXTEND.Property_Get
+
+		if not _.haskey(property)
         {
-            msgbox, 123
 			return ""
 		}
 		return _[property](this)
@@ -34,13 +40,8 @@ class __CLASS_FS_STRING_EXTEND
 		return
 	}
     */
-}
-
-
-class __CLASS_FSSTRINGEXBASE
-{
 ;------------------------- define string method -------------------------
-class Function_Call
+class Method_Call
 {
     toCharLs(str) 
     {
@@ -48,7 +49,7 @@ class Function_Call
     }
 }
 
-;------------------------- define string property -------------------------
+;------------------------- define string property get -------------------------
 class Property_Get 
 {
     len(str) 
@@ -57,11 +58,12 @@ class Property_Get
     }
 }
 
-/*
+;------------------------- define string property set -------------------------
+;class Property_Set 
+;{
+;~ 元函数 __Set() 跳转, 未明确
+;}
+
 ;-------------------------  -------------------------
-class Property_Set 
-{
-    ;~ 元函数 __Set() 跳转, 未明确
-}
-*/ 
-}
+}   ;~ end of __CLASS_FS_STRING_EXTEND
+;-------------------------  -------------------------
