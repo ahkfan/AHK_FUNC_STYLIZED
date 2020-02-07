@@ -42,7 +42,7 @@ class Method_Call
 {
     toCharLs(str) 
     {
-        return strsplit(str)
+        return StrSplit(str)
     }
 }
 
@@ -51,7 +51,7 @@ class Property_Get
 {
     len(str) 
     {
-        return strlen(str)
+        return StrLen(str)
     }
 }
 
