@@ -4,9 +4,6 @@
 ;msgbox, % "abc".len
 
 
-
-
-
 class __CLASS_FS_STRING_EXTEND 
 {
     ;-------------------------  -------------------------
