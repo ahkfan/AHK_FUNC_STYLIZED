@@ -1,4 +1,7 @@
-﻿Caputre(OutputFile, x, y, w, h)
+﻿Caputre(A_Desktop "\1.bmp", 0, 0, A_ScreenWidth, A_ScreenHeight)
+
+
+Caputre(OutputFile, x, y, w, h)
 {
     /*
         说明: 截图并保存到bmp文件中

@@ -18,14 +18,16 @@ arr()
 
 class __ClASS_AHKFS_ARRAY
 {
+	;------------------------- copy -------------------------
 	cpy(arr)
 	{
 		/*
-			简介: 完全拷贝一个对象, 无法拷贝class中的方法, cpy = copy
+			简介: 完全拷贝一个数组, 无法拷贝class中的方法, cpy = copy
 
-			参1: arr 	{object}	任意层级的数组
+			[1] arr {Array / Associative Array}	任意层级的数组
 
-			返回值:		(object)	返回对象与源对象无引用关系
+			返回值:	{Array / Associative Array}	
+					返回数组与源数组无引用关系
 		*/
 		local
 		switch fstype(arr)
@@ -51,15 +53,15 @@ class __ClASS_AHKFS_ARRAY
 		}
 		return ret
 	}
-
-	swapKeyVar(arr)
+	;------------------------- swap -------------------------
+	SwapKeyVar(arr)
 	{
 		/*
-			简介: 调换 数组 的 键值对 (trans key var), 不建议多维复杂类型的数组使用
+			简介: 调换数组的键值对, 不建议多维复杂的数组使用
 
-			参1: arr {Object}
+			[1] arr {Array / Associative Array}
 
-			返回值: {Array}
+			返回值: {Array / Associative Array}
 		*/
 		local
 		if fstype(arr) != "Associative Array"
@@ -69,11 +71,11 @@ class __ClASS_AHKFS_ARRAY
 			ret[var] := key
 		return ret
 	}
-
+	;------------------------- debug -------------------------
 	print(arr)
 	{
 		/*
-		简介: 返回一个字符串形式的数组, 返回形式与ahk的定义形式相同: 如下
+		简介: 返回一个字符串形式的数组, 返回形式与ahk的定义形式相同, 如下: 
 				[items*, [items*], {key: value}, ……]
 		*/
 		local
