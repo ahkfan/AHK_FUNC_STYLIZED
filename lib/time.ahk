@@ -20,18 +20,12 @@ time_s(mSec, byref t, byref t0 := 0)
 	*/
 
 	if (not t > 0)
-	{
 		t := A_TickCount + mSec
-	}
 
 	if ((t0 := t - A_TickCount) <= 0)
-	{
 		return false, t := 0
-	}
 	else
-	{
 		return true
-	}
 }
 
 time_suning()

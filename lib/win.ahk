@@ -10,23 +10,21 @@ win()
 
 class __ClASS_AHKFS_WINDOW
 {
-    ;--------------------------------------------
-    class msg
-    {
-        
-    }
-    ;--------------------------------------------
-    class op
-    {
 
-    }
     ;--------------------------------------------
     HwndFormat(hwnd)        ;~ win.HwndFormat()
     {
         /*
         简介:   将传入的窗口句柄格式化
-        参1:    hwnd {String / UInt}
-        返回值: {String} "ahk_id 0xffffffff" 此类形式的字符串0
+
+        参数: 
+            [1] hwnd {String / UInt}
+
+        返回值: {String} 
+            格式不合法返回 ""
+            格式无误则返回 "ahk_id 0xffffffff" 此类形式的字符串
+            
+
         */
         if (SubStr(hwnd, 1, 9) = "ahk_id 0x")
             return (format("{1:d}", SubStr(hwnd, 8)) > 0) ? (hwnd) : ("")
@@ -35,6 +33,7 @@ class __ClASS_AHKFS_WINDOW
         else
             return ""
     }
+
     ;--------------------------------------------
     GetAttrs(hwnd)          ;~ win.GetAttrs()
     {                       ;~ todo: 相对客户区的坐标和尺寸
@@ -42,13 +41,15 @@ class __ClASS_AHKFS_WINDOW
         /*
         简介:   获取窗口大部分可用属性
 
-        参1:    hwnd   {UInt}    窗口句柄
+        参数:
+            [1] hwnd   {UInt}    窗口句柄
 
         返回值: {Object / String} 窗口属性 / 错误
                 1. 0                        窗口格式错误
                 2. ""                       窗口不存在
                 3. {Object}                 窗口的某些属性
                     {
+                        "Error"         : {String}  为空时成功取得窗口, 否则显示错误信息
                         "isActive"      : {Boolean}
                         "isMax"         : {Boolean}
                         "isMin"         : {Boolean}
@@ -71,15 +72,15 @@ class __ClASS_AHKFS_WINDOW
                     }
         */
         
-        if ((_hwnd := this.hwndFormat(hwnd)) = "")
+        if ( ( _hwnd := this.hwndFormat(hwnd) ) == "")
         {
-            return 0
+            return { "Error": ( "wrong hwnd [") . (hwnd) . ("]") }
         }
         if not WinExist(_hwnd)
         {
-            return ""
+            return { "Error": ("win not exist: ") . (hwnd) }
         }
-        ret := {}
+        
         WinGetPos, x, y, w, h, % _hwnd
         WinGetTitle, tilte		, % _hwnd
         WinGetClass, className	, % _hwnd
@@ -95,6 +96,8 @@ class __ClASS_AHKFS_WINDOW
         WinGet, ControlListHwnd	, ControlListHwnd  , % _hwnd
         WinGet, MinMax          , MinMax        , % _hwnd
 
+        ret := {}
+        ret.Error           := ""
         ret.isActive        := WinActive(_hwnd) ? true : false
         ret.isMax           := (MinMax = 1)     ? true : false
         ret.isMin           := (MinMax = -1)    ? true : false
@@ -121,8 +124,91 @@ class __ClASS_AHKFS_WINDOW
         }
         return ret
     }
+
     ;--------------------------------------------
-    FindHwndBy(filter)      ;~ win.FindHwnd()
+    FindWindow(filter)      ;~ win.FindHwnd()
+    {
+        /*
+        简介: 通过过滤条件查找窗口
+
+        参数: 
+            [1] filter {Associative Array} 筛选窗口的条件 可有以下选项:
+            
+                Title       : {String}  窗口完整匹配标题
+                Class       : {String}  窗口类名
+                Exe         : {String}  程序名称
+                Path        : {String}  路径
+                w           : {Int}     完整窗口宽度
+                h           : {Int}     完整窗口高度
+                cw          : {Int}     窗口客户区宽度
+                ch          : {Int}     窗口客户区高度
+                Style       : {UInt}    窗口Style属性
+                ExStyle     : {UInt}    窗口ExStyle属性
+                ChildStrLs  : {String}  由 winget 的 ControlList 返回的字符串
+        
+        返回: {Array}   窗口列表
+        */  
+
+    }
+
+    ;-------------------------  -------------------------
+
+
+    GetAHwnd()
+    {
+        local hwnd
+        winget, hwnd, id, A
+        return hwnd
+    }
+
+    GetClientSize(hWnd) 
+    {
+        /*
+        简介: 获取客户区尺寸
+        */
+        VarSetCapacity(rect, 16)
+        DllCall("GetClientRect", "ptr", hWnd, "ptr", &rect)
+        return { "w" : NumGet(rect, 8, "int"), "h" :  NumGet(rect, 12, "int") }
+    }
+
+    GetPos(hwnd)
+    {
+        WinGetPos, x, y, , , % _hwnd
+        return {"x" : x, "y" : y}
+    }
+
+    GetClientPos(hwnd)
+    {
+        /*
+        简介: 获取窗口客户区全屏坐标
+        */
+        local x, y
+        ret := this.GetPos(hwnd)
+        cp  := PosToClient(hwnd, ret.x, ret.y)
+        return { "x" : (x- cp.x), "y" : (y- cp.y) }
+    }
+
+
+    PosToClient(hWnd, x, y) 
+    {
+        /*
+        简介: 将坐标转换为相对窗口客户区的坐标
+        */
+        VarSetCapacity(pt, 8), NumPut(y, NumPut(x, pt, "int"), "int")
+
+        if !DllCall("ScreenToClient", "ptr", hWnd, "ptr", &pt)
+            return false
+
+        return {"x" : NumGet(pt, 0, "int"), "y" : NumGet(pt, 4, "int")}
+    }
+
+    ;--------------------------------------------
+    class msg
+    {
+        
+    }
+    ;--------------------------------------------
+    class op
     {
 
     }
