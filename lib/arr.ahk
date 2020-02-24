@@ -37,15 +37,16 @@ class __ClASS_AHKFS_ARRAY
 				for _,v in arr
 				{
 					if IsObject(arr)
-						ret.Push(arr_cpy(ret))
+						ret.Push(this.cpy(ret))
 					ret.Push(v)
 				}
 			case "Associative Array":
+			case "OrderedDict":
 				ret := {}
 				for k,v in arr
 				{
 					if IsObject(arr)
-						ret[k] := arr_cpy(ret)
+						ret[k] := this.cpy(ret)
 					ret[k] := v
 				}
 			Default:
@@ -87,7 +88,7 @@ class __ClASS_AHKFS_ARRAY
 				for _, v in arr
 				{
 					if IsObject(v)
-						ret .= arr_print(v) . ", "
+						ret .= this.print(v) . ", "
 					else if fstype(v) == "String"
 						ret .= """" . v . """" . ", "
 					else
@@ -96,11 +97,12 @@ class __ClASS_AHKFS_ARRAY
 				ret := SubStr(ret, 1, -2)
 				ret .= "]"
 			case "Associative Array":
+			case "OrderedDict":
 				ret .= "{"
 				for k,v in arr
 				{
 					if IsObject(v)
-						ret .= """" . k . """" . ": " . arr_print(v) . ", "
+						ret .= """" . k . """" . ": " . this.print(v) . ", "
 					else if fstype(v) == "String"
 						ret .= """" . k . """" . ": " . """" . v . """" . ", "
 					else

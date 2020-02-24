@@ -27,7 +27,6 @@ class __CLASS_FS_STRING_EXTEND
 			throw Exception(err.Message, -1)
 	}
 
-
 	__Get(property) 
     {
 		static _ := __CLASS_FS_STRING_EXTEND.Property_Get
