@@ -8,8 +8,10 @@ class OrderedDict
     {
         ; pairs should be passed in (key1, value1, key2, value2, …)
         local
-        this._Keys := []
-        this._Dict := {}
+        _Keys := []
+        _Dict := {}
+        ObjRawSet(this, "_Keys", _Keys)
+        ObjRawSet(this, "_Dict", _Dict)
         
         Loop % pairs.Count()//2
         {
@@ -53,6 +55,12 @@ class OrderedDict
         local
         this._Keys.Push(Key)
         this._Dict[Key] := Value
+    }
+
+    HasKey(Key)
+    {
+        local
+        return this._Dict.HasKey(Key)
     }
 
     Delete(Key)

@@ -1,37 +1,75 @@
 ﻿; LIB OF INI
-; __CLASS_AHKFS__INI __set pass
-; other no pass yet
+/*
+    Require ordered_dict.ahk
+
+    Example:
+        ini := fsini()              ; return a instance of IniParser(__CLASS_AHKFS__INI)
+        ini.Parser(filename)        ; parse a ini file
+        ini[section, key] := value  ; set a section and a pair of key and value
+        ini.write(filename)         ; write a ini tree to a file
+    
+    Functions:
+        ini[section, ""] := ""      ; creat an empty section
+        ini["", key] := val         ; search all section in ini tree. If the tree has the key, set value of key to val
+                                    ; if there were more than one match, set the first key
+        ini["", key]                ; search all section in ini tree. If the tree has the key, return the value of key
+                                    ; if there were more than one match, return the first matched value
+
+        ini.GetAllSections()        ; return all section name in a list
+        ini.Insert(postion, section[, key, value])
+                                    ; Insert a pairs after the postion(Key)
+                                    ; if omit key and value, insert a section after the postion(section)
+                                    ; if pass "" to section, function will search all section in ini tree
+                                    ; and insert after first matched postion(key)
+        ini.InsertBefore(postion, section[, key, value])
+                                    ; Insert a pairs before the postion(Key)
+                                    ; if omit key and value, insert a section before the postion(section)
+                                    ; if pass "" to section, function will search all section in ini tree
+                                    ; and insert before first matched postion(key)
+        ini.HasSection(Section)     ; if tree has section name Section return True, else return False
+        ini.HasKey(Section, Key)    ; if section has Key return True, else return False
+        ini.Delete(Section[, Key])  ; delete key in a section, if key is "", delete the section
+
+        If you have created a section, then you can use 
+        ini[section][key] := value to creat a pair
+        But creat a section and a pair at the same time by this way is not allowed
+        Other way that used to set value in Associative Array is allowed
+
+        Any way that used to get value in Associative Array is allowed
+*/
+
+; passed
+
+#Include <ordered_dict>
 
 fsini()
 {
-    Return new __CLASS_AHKFS__INI
+    Return new __CLASS_AHKFS__INI()
 }
 
 class __CLASS_AHKFS__INI 
 {
     __New()
     {
-        IniAST := new __CLASS_AHKFS__INIAST__
+        IniAST := new __CLASS_AHKFS__INIAST__()
         ObjRawSet(this, "IniAST", IniAST)
     }
 
-    __Set(section, pairs := "")
+    __Set(section, Key, Value)
     {
-        this.IniAST[section] := pairs
+        this.IniAST[section, Key] := Value
         Return this
     }
 
-    __Get(section)
+    __Get(Section, Key := "")
     {
-        return this.IniAST[Section]
+        Section := Section ? Section : this.IniAST.FindSection(Key)
+        return this.IniAST.Get(Section, Key)
     }
 
-    GetAllSection()
+    GetAllSections()
     {
-        sections := []
-        for section,_ in this.IniAST
-            sections.Push(section)
-        Return sections
+        return this.IniAST.GetKeys()
     }
 
     Delete(section, key := "")
@@ -39,6 +77,87 @@ class __CLASS_AHKFS__INI
         if (key == "")
             this.IniAST.delete(section)
         this.IniAST[Section].delete(key)
+    }
+
+    Insert(postion, section, key := "", value := "")
+    {
+        section := section ? section : this.IniAST.FindSection(key)
+        d := this.IniAST._Keys
+        if (key)
+        {
+            c := this.IniAST[section]._Keys.Count()
+            keylist := this.IniAST[Section]["_Keys"]
+            while(A_Index <= c)
+            {
+                if (postion == keylist[A_Index])
+                {
+                    keylist.InsertAt(A_Index+1, Key)
+                    this.IniAST[section]._Dict[key] := value
+                    break
+                }
+            }
+            ;~ throw Exception("Can not find postion key.",-1)
+        }
+        else
+        {
+            for index, aVal in this.IniAST._Keys
+            {
+                if (postion == aVal)
+                {
+                    this.IniAST._Keys.InsertAt(index+1, Section)
+                    this.IniAST._Dict[Section] := new __CLASS_AHKFS__INIAST__.__Pairs__()
+                    break
+                }
+            }
+            ;~ throw Exception("Can not find postion section.", -1)
+        }
+        return this
+    }
+
+    InsertBefore(postion, section, key := "", value := "")
+    {
+        section := section ? section : this.IniAST.FindSection(key)
+        d := this.IniAST._Keys
+        if (key)
+        {
+            c := this.IniAST[section]._Keys.Count()
+            keylist := this.IniAST[Section]["_Keys"]
+            while(A_Index <= c)
+            {
+                if (postion == keylist[A_Index])
+                {
+                    keylist.InsertAt(A_Index, Key)
+                    this.IniAST[section]._Dict[key] := value
+                    break
+                }
+            }
+            ;~ throw Exception("Can not find postion key.",-1)
+        }
+        else
+        {
+            for index, aVal in this.IniAST._Keys
+            {
+                if (postion == aVal)
+                {
+                    this.IniAST._Keys.InsertAt(index, Section)
+                    this.IniAST._Dict[Section] := new __CLASS_AHKFS__INIAST__.__Pairs__()
+                    break
+                }
+            }
+            ;~ throw Exception("Can not find postion section.", -1)
+        }
+        return this
+    }
+    
+    HasSection(Section)
+    {
+        return this.IniAST.Has(Section)
+    }
+    
+    HasKey(Section := "", Key := "")
+    {
+        Section := Section ? Section : this.IniAST.FindSection()
+        return this.IniAST[Section].Has(Key)
     }
 
     Write(filename)
@@ -52,8 +171,10 @@ class __CLASS_AHKFS__INI
         }
         
         file := FileOpen(filename, "w")
-        if IsObject(file)
+        if (!IsObject(file))
+        {
             Throw Exception("File open fail.", -1)
+        }
         file.Write(str)
         file.Close()
     }
@@ -68,6 +189,8 @@ class __CLASS_AHKFS__INI
         Loop, Read, %file%
         {
             Contain := Trim(A_LoopReadLine) 
+            if (Contain == "")
+                continue
             ; delete comment
             if InStr(Contain, ";")
                 Contain := SubStr(Contain, 1, InStr(Contain, ";") - 1)
@@ -78,7 +201,7 @@ class __CLASS_AHKFS__INI
                     Throw Exception("Invaild section define! Expect a ""]""", -1)
                 currentSection := SubStr(Contain, 2, -1)
                 ; Section should be unique
-                if this.IniAST.HasKey(currentSection)
+                if this.IniAST.Has(currentSection)
                     Throw Exception("Duplicated section!")
             }
             ; key and value
@@ -89,7 +212,7 @@ class __CLASS_AHKFS__INI
                 k := Trim(SubStr(Contain, 1, assignPos-1))
                 ; make sure key is correct
                 RegExMatch(k, "\s*[_a-zA-Z][_a-zA-Z0-9]*", rightK)
-                if rightK != k
+                if (rightK != k)
                     Throw Exception("Invaild key!", -1)
 			    v := Trim(SubStr(Contain, assignPos+1))
                 this.IniAST[currentSection, k] := v 
@@ -98,80 +221,80 @@ class __CLASS_AHKFS__INI
     }
 }
 
-; Inner AST class, do not call it directly!
-class __CLASS_AHKFS__INIAST__
+; Inner AST class, do not call it directly!    
+class __CLASS_AHKFS__INIAST__ extends OrderedDict
 {
-    ; TODO: finish class pairs and make AST fit to it
-    
-    ; Inner PAIRS class, do not call it directly!
-    class __PAIRS__
+    class __PAIRS__ extends OrderedDict
     {
-        ; 只为每一个 section 建立一个 pairs 类
-        __New(pairs)
+
+    }
+    
+    __Set(Section, Key, Value)
+    {
+        local
+        Section := Section ? Section : this.FindSection(Key)
+        if (Section == "")
         {
-            for key, val in pairs
-                this.key := val
+            return this
         }
-        __Set(key, val*)
+        if (this.Has(section)) 
         {
-            ; check set is correct or not
-            ; only allow "(str)key: (str)val"
-            if IsObject(val)
-                throw Exception("value of a key must be a string", -1)
-            ObjRawSet(this, key, val)
-            return
+            this._Dict[section]["Set"](Key, Value)
         }
-        __Get()
+        else
         {
-            ; 我在这个地方抛异常是不是就不用管 key 不存在的问题了
-            throw Exception("Get non-exist key!", -1)
+            this._Keys.Push(section)
+            ; if key == "", we just creat an empty section
+            if (Key)
+                this._Dict[section] := new this.__PAIRS__(key, value)
+            else
+                this._Dict[section] := new this.__PAIRS__()
         }
+        return this
     }
 
-    __Set(Section, pairs := "")
+    FindSection(key)
     {
-        ; To set when section is ""
-        if (section == "")
+        for section, pairs in this
         {
-            if IsObject(pairs)
+            for aKey, _ in pairs
             {
-                for Asection, Apairs in this
+                if (key == aKey)
                 {
-                    for key, val in Apairs
-                    {
-                        if (pairs.HasKey(key))
-                        {
-                            ObjRawSet(this, ASection, Object(key, val))
-                            return this
-                        }
-                    }
+                    return section
                 }
             }
-            throw Exception("Set Non-exist key!", -1, "If you want to set a key, make sure it is under an exist seciton.")
         }
-        ObjRawSet(this, Section, new this.__PAIRS__(pairs))
+        return ""
+    }
+
+    Set(section, key := "", value := "")
+    {
+        if (section == "")
+        {
+            section := this.FindSection(key)
+        }
+        
+        if (this.HasKey(section)) 
+        {
+            this._Dict[section]["Set"](key, value)
+        }
+        if (key)
+            this._Dict[section] := new this.__PAIRS__()
+        else
+            this._Dict[section] := new this.__PAIRS__(key, value)
+        this._Keys.Push(section)
         return this
     }
     
-    __Get(Section, pairs := "")
+    Get(section, key := "")
     {
-        ; To get when section is ""
         if (section == "")
         {
-            if IsObject(pairs)
-            {
-                for section, Apairs in this
-                {
-                    for key, val in Apairs
-                    {
-                        if (pairs.HasKey(key))
-                            return val
-                    }
-                }
-            }
-            throw Exception("Get non-exist key!", -1)
+            return
         }
-        throw Exception("Get non-exist section!", -1)
+        if (key == "")
+            return this._Dict[section]
+        return this._Dict[section]["Get"](key)
     }
 }
-    
