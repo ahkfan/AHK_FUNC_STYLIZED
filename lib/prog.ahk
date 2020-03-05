@@ -61,7 +61,6 @@ class __CLASS_AHKFS_PROGRAM
         return OutputVarPID
     }
 
-    ;------------------------- run as administrator -------------------------
     RunAs(User, Password, Domain)
     {
         if User == "" And Password == "" And Domain == ""
@@ -72,7 +71,7 @@ class __CLASS_AHKFS_PROGRAM
     }
 
     ;------------------------- get process info -------------------------
-    GetAll()
+    GetAllProcess()
     {
         lsAllProcess := []
         for process in ComObjGet("winmgmts:").ExecQuery("Select * from Win32_Process")

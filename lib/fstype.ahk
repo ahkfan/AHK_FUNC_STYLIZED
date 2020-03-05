@@ -12,25 +12,23 @@
     在对象是一个类时返回字符串 "Object: BaseObjectName"，如果基对象是数组或者关联数组则认为对象是一个数组或者关联数组
     问题：不支持判断 FuncObject ComObject RegexObject 等等复杂的对象，
          这些对象要么会被视作数组如FileObject；要么会抛出异常，代表内存中的结构的对象通常会抛出异常
-         
+
          不支持判断 Inf -Inf NaN 等特殊的浮点类型，这些浮点类型应该会被当成字符串类型
 */
 
 
 fstype(obj)
 {
-    local objCount
+    local
     if IsObject(obj)
     {
         if obj.haskey("__class")
-            return "Class=" obj.__class ""
-            
-        objCount := obj.count()
-        if (objCount = 0)
+            return obj.__class
+        if ((objCount := obj.count()) == 0)
             return "Array"
         else if (objCount == obj.Length() && obj.MinIndex() == 1)
             return "Array"
-        else 
+        else
             return "Associative Array"
     }
     else

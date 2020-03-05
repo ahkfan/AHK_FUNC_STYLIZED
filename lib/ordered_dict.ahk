@@ -85,8 +85,7 @@ class OrderedDict
         {
             local
             this._ItemsEnum := OrderedDict._Keys._NewEnum()
-            this.OrderedDict := OrderedDict
-            this.OrderedDict := OrderedDict
+            this.Dict := OrderedDict._Dict
             return this
         }
         
@@ -97,7 +96,7 @@ class OrderedDict
             if(index)
             {
                 Key   := index
-                Value := this.OrderedDict._Dict[index]
+                Value := this.Dict[index]
                 return Value
             }
         }

@@ -2,14 +2,14 @@
 
 */
 
-math()
+eval()
 {
-    return __CLASS_AHKFS_MATH
+    return __CLASS_AHKFS_EVAL
 }
 
-class __CLASS_AHKFS_MATH
+class __CLASS_AHKFS_EVAL
 {
-    calc(t, t0="", t1="", t2="")
+    Calc(t, t0="", t1="", t2="")
     {
         /* 
 
@@ -19,8 +19,6 @@ class __CLASS_AHKFS_MATH
         原作者:     derRaphael
         Bug修正:    Lv2
 
-        ;msgbox, % math().calc("1*2+3")
-        
         */
         static  f := "sqrt|log|ln|exp|sin|cos|tan|asin|acos|atan|rad|deg|abs", c := "fib|gcb|min|max|sgn"
                 o := "\*\*|\^|\*|/|//|\+|\-|%", pi:="pi", e:="e"

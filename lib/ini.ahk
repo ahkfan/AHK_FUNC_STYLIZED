@@ -20,15 +20,19 @@
                                     ; Insert a pairs after the postion(Key)
                                     ; if omit key and value, insert a section after the postion(section)
                                     ; if pass "" to section, function will search all section in ini tree
-                                    ; and insert after first matched postion(key)
+                                    ; and insert after the first matched postion(key)
         ini.InsertBefore(postion, section[, key, value])
                                     ; Insert a pairs before the postion(Key)
                                     ; if omit key and value, insert a section before the postion(section)
                                     ; if pass "" to section, function will search all section in ini tree
-                                    ; and insert before first matched postion(key)
+                                    ; and insert before the first matched postion(key)
         ini.HasSection(Section)     ; if tree has section name Section return True, else return False
-        ini.HasKey(Section, Key)    ; if section has Key return True, else return False
+        ini.HasKey(Section, Key)    ; if Section has Key return True, else return False
+                                    ; if pass "" to Section, function will search all section in ini tree
+                                    ; if tree has Key return True, else return False
         ini.Delete(Section[, Key])  ; delete key in a section, if key is "", delete the section
+                                    ; if pass "" to section, function will search all section in ini tree
+                                    ; and delete the first matched key-value pair
 
         If you have created a section, then you can use 
         ini[section][key] := value to creat a pair
@@ -74,6 +78,7 @@ class __CLASS_AHKFS__INI
 
     Delete(section, key := "")
     {
+        section := section ? section : this.IniAST.FindSection(key)
         if (key == "")
             this.IniAST.delete(section)
         this.IniAST[Section].delete(key)
@@ -154,9 +159,15 @@ class __CLASS_AHKFS__INI
         return this.IniAST.Has(Section)
     }
     
-    HasKey(Section := "", Key := "")
+    HasKey(Section , Key)
     {
-        Section := Section ? Section : this.IniAST.FindSection()
+        if (Section)
+        {
+            if (this.IniAST.FindSection(Key))
+                return True
+            else
+                return False
+        }
         return this.IniAST[Section].Has(Key)
     }
 
@@ -182,7 +193,7 @@ class __CLASS_AHKFS__INI
     Parse(file)
     {
         IfNotExist %file%
-            Throw Exception("None exist file passed!", -1)
+            Throw Exception("Non-exist file passed!", -1)
         
         currentSection := ""
 
@@ -226,7 +237,7 @@ class __CLASS_AHKFS__INIAST__ extends OrderedDict
 {
     class __PAIRS__ extends OrderedDict
     {
-
+        ; pass
     }
     
     __Set(Section, Key, Value)
@@ -257,34 +268,10 @@ class __CLASS_AHKFS__INIAST__ extends OrderedDict
     {
         for section, pairs in this
         {
-            for aKey, _ in pairs
-            {
-                if (key == aKey)
-                {
-                    return section
-                }
-            }
+            if (pairs.Has(key))
+                return section
         }
         return ""
-    }
-
-    Set(section, key := "", value := "")
-    {
-        if (section == "")
-        {
-            section := this.FindSection(key)
-        }
-        
-        if (this.HasKey(section)) 
-        {
-            this._Dict[section]["Set"](key, value)
-        }
-        if (key)
-            this._Dict[section] := new this.__PAIRS__()
-        else
-            this._Dict[section] := new this.__PAIRS__(key, value)
-        this._Keys.Push(section)
-        return this
     }
     
     Get(section, key := "")

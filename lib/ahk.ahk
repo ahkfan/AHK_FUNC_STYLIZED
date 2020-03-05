@@ -27,7 +27,7 @@ class __ClASS_AHK
 {
     static file := "ahk.ahk"
     ;-----------------------------------
-    GetAllProcess()
+    GetAllAHKProcess()
     {
         /*
             简介: 获取当前所有活动的ahk进程信息

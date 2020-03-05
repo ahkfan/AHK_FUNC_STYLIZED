@@ -93,12 +93,11 @@ class Rand
 		} 
     }
 
-    Shuffle(source)
+    Shuffle(byref source)
     {
-        ; 返回一个顺序被随机打乱的简单数组
+        ; 打乱一个数组
 		; 只支持 ahk v1.1.31+
 		; Fisher–Yates Shuffle
-        s2 := New source                    ; 用原型链防止操作影响 source 
 		switch fstype(source)
 		{
 			case "Array":
@@ -106,28 +105,14 @@ class Rand
             	for k,v in source
             	{
                 	j := this.Rand(1, l-k+1)    ; l-k会到0加一让序数从一开始
-                	temp := s2[l-k+1]
-                	s2[l-k+1] := s2[j]
-                	s2[j] := temp
+                	temp := source[l-k+1]
+                	source[l-k+1] := source[j]
+                	source[j] := temp
 				}
-				Return s2
+				Return source
 			Default:
 				Throw, Exception("Source must be an unempty simple array, not an empty array or associative arrays.", -1)
 		}
-        /*
-        byref 版
-        if IsObject(source)
-        {
-            l := source.Length()
-            for k,v in source
-            {
-                j := this.Rand(1, l-k+1)
-                temp := source[l-k+1]
-                source[l-k+1] := source[j]
-                source[j] := temp
-            }
-        }
-        */
     }
     
     ; TODO: 把这个部分改成可以跑的

@@ -61,4 +61,70 @@ class __CLASS_AHKFS_OPERATION_SYSTEM
                         ret.push(addr)
         return ret
     }
+
+    /*
+    may use sysget in this way?
+    class Info
+    {
+        GetMonitorCount()
+        {
+            SysGet, OutputVar, MonitorCount
+            return OutputVar
+        }
+    }
+
+    */
+
+    GetInfo(infoNumber)
+    {
+        SysGet, OutputVar, infoNumber
+        return OutputVar
+    }
+
+    SplitPath(path)
+    {
+        SplitPath, path , OutFileName, OutDir, OutExtension, OutNameNoExt, OutDrive
+        return [OutFileName, OutDir, OutExtension, OutNameNoExt, OutDrive]
+    }
+
+    SetRegView(RegView)
+    {
+        SetRegView, RegView
+        return this
+    }
+
+    RegRead(key, val := "")
+    {
+        if val
+        {
+            RegRead, OutputVar, key 
+            return OutputVar
+        }
+        Else
+        {
+            RegRead, OutputVar, key, val
+            return OutputVar
+        }
+    }
+
+    RegWrite(ValueType, KeyName , ValueName := "", Value := "")
+    {
+        if (ValueName and Value)
+        {
+            RegWrite, ValueType, KeyName
+        }
+        Else if (Value)
+        {
+            RegWrite, ValueType, KeyName, ValueName
+        }
+        Else
+        {
+            RegWrite, ValueType, KeyName , ValueName, Value
+        }
+    }
+
+    RegDelete(KeyName, ValueName)
+    {
+        RegDelete KeyName, ValueName
+    }
 }
