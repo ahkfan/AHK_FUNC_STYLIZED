@@ -67,7 +67,7 @@ class __CLASS_FS_STRING_EXTEND
 			return StrSplit(str, args*)
 		}
 
-		lower(str, args)
+		lower(str, args*)
 		{
 			if args.length()
 				throw Exception("Too many parameters passed to function.", -1)
@@ -75,7 +75,7 @@ class __CLASS_FS_STRING_EXTEND
 			return str
 		}
 
-		upper(str, args)
+		upper(str, args*)
 		{
 			if args.length()
 				throw Exception("Too many parameters passed to function.", -1)
@@ -83,7 +83,7 @@ class __CLASS_FS_STRING_EXTEND
 			return str
 		}
 
-		titler(str, args)
+		title(str, args*)
 		{
 			if args.length()
 				throw Exception("Too many parameters passed to function.", -1)

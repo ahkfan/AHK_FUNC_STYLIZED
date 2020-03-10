@@ -1,0 +1,9 @@
+# bakeup
+*.bak
+
+# unittest
+unit_test.ahk
+runtest.bat
+Yunit.ahk
+colorfulout.py
+testfile

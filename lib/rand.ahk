@@ -119,7 +119,7 @@ class Rand
     Sample(source, num)
     {
         l := this._getLength(source)
-        if num >= l or num <= 0
+        if (num >= l or num <= 0)
             Throw Exception("Sample larger than source or is negative", -1)
 
         ; 这个情况区分的部分是什么道理我也不知道，python官方是这么写的LOL

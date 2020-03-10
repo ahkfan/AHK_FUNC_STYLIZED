@@ -4,7 +4,7 @@
 
     Example:
         ini := fsini()              ; return a instance of IniParser(__CLASS_AHKFS__INI)
-        ini.Parser(filename)        ; parse a ini file
+        ini.Parse(filename)         ; parse a ini file
         ini[section, key] := value  ; set a section and a pair of key and value
         ini.write(filename)         ; write a ini tree to a file
     
@@ -212,7 +212,7 @@ class __CLASS_AHKFS__INI
                     Throw Exception("Invaild section define! Expect a ""]""", -1)
                 currentSection := SubStr(Contain, 2, -1)
                 ; Section should be unique
-                if this.IniAST.Has(currentSection)
+                if this.HasSection(currentSection)
                     Throw Exception("Duplicated section!")
             }
             ; key and value

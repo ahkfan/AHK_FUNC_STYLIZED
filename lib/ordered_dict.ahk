@@ -24,8 +24,8 @@ class OrderedDict
     __Set(Key, Value)
     {
         local
-        this._Keys.Push(Key)
-        this._Dict[Key] := Value
+        this.Set(Key, Value)
+        return this
     }
 
     __Get(Key)
@@ -36,11 +36,13 @@ class OrderedDict
 
     Count()
     {
+        local
         return this._Keys.Count()
     }
 
     GetKeys()
     {
+        local
         return this._Keys
     }
 
@@ -53,11 +55,13 @@ class OrderedDict
     Set(Key, Value)
     {
         local
-        this._Keys.Push(Key)
+        if (!this._Dict.HasKey(Key))
+            this._Keys.Push(Key)
         this._Dict[Key] := Value
+        return this
     }
 
-    HasKey(Key)
+    Has(Key)
     {
         local
         return this._Dict.HasKey(Key)
@@ -85,7 +89,7 @@ class OrderedDict
         {
             local
             this._ItemsEnum := OrderedDict._Keys._NewEnum()
-            this.Dict := OrderedDict._Dict
+            this.dict := OrderedDict._Dict
             return this
         }
         
@@ -96,7 +100,7 @@ class OrderedDict
             if(index)
             {
                 Key   := index
-                Value := this.Dict[index]
+                Value := this.dict[index]
                 return Value
             }
         }

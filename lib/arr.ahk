@@ -41,7 +41,6 @@ class __ClASS_AHKFS_ARRAY
 					ret.Push(v)
 				}
 			case "Associative Array":
-			case "OrderedDict":
 				ret := {}
 				for k,v in arr
 				{

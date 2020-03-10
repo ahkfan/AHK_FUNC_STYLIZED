@@ -31,13 +31,12 @@ class __Class_AHKFS_Mouse
 	}
 
 	;------------------------- mouse move -------------------------
-	move(x, y, speed := 0)
+	move(x, y, speed := 0, mode := "")
 	{
+		if mode == "R"
+			MouseMove, % x, % y, % speed, R
+		; should check mode and if not match, throw exception?
 		MouseMove, % x, % y, % speed
-	}
-	moveR(x, y, speed := 0)
-	{
-		MouseMove, % x, % y,  % Speed, R
 	}
 
 	x[]
@@ -64,15 +63,41 @@ class __Class_AHKFS_Mouse
 		}		
 	}
 
-	pos[]
-	{
-		set {
+	; pos[]
+	; {
+	; 	set {
 			
-		}
+	; 	}
 
-		get {
+	; 	get {
 
-		}
+	; 	}
+	; }
+
+	Click(Params*)
+	{
+		local i, Param, Args
+		for i, Param in Params
+			Args .= " " . Param
+		Click %Args%
+	}
+
+	MouseClick(WhichButton:="Left", X:="", Y:="", ClickCount:="", Speed:="", DU:="", R:="")
+	{
+		MouseClick %WhichButton%, %X%, %Y%, %ClickCount%, %Speed%, %DU%, %R%
+	}
+
+	ClickDrag(WhichButton, X1:="", Y1:="", X2:="", Y2:="", Speed:="", R:="")
+	{
+		MouseClickDrag %WhichButton%, %X1%, %Y1%, %X2%, %Y2%, %Speed%, %R%
+	}
+	
+	GetPos(ByRef OutputVarX:="", ByRef OutputVarY:="", ByRef OutputVarWin:="", ByRef OutputVarControl:="", Mode:=0)
+	{
+		MouseGetPos OutputVarX, OutputVarY, OutputVarWin, OutputVarControl, %Mode%
+		OutputVarWin += 0
+		if (Mode & 2)
+			OutputVarControl += 0
 	}
 
 	;------------------------- mouse left button event -------------------------
@@ -120,21 +145,23 @@ class __Class_AHKFS_Mouse
 	}
 
 	;------------------------- pixel under mouse -------------------------
-	GetPixelRGB()
+	GetColor()
 	{
 		local X, Y, ret
 		MouseGetPos, X, Y
 		PixelGetColor, ret, % X, % Y, RGB
 		return ret
 	}
-	GetPixelBGR()
-	{
-		local X, Y, ret
-		MouseGetPos, X, Y
-		PixelGetColor, ret, % X, % Y
-		return ret		
-	}
-	GetPixelRGBEx()
+	; let users to convert this by their own
+	; GetPixelBGR()
+	; {
+	; 	local X, Y, ret
+	; 	MouseGetPos, X, Y
+	; 	PixelGetColor, ret, % X, % Y
+	; 	return ret		
+	; } 
+	; 神起名,这也能叫EX,你增强了啥...
+	GetColorScreen()
 	{
 		local ex1, ex2, X, Y
 		ex1 := A_CoordModeMouse
@@ -147,19 +174,19 @@ class __Class_AHKFS_Mouse
 		CoordMode, Pixel, % ex2
 		return ret
 	}
-	GetPixelBGREx()
-	{
-		local ex1, ex2, X, Y
-		ex1 := A_CoordModeMouse
-		ex2 := A_CoordModePixel
-		CoordMode, Mouse, Screen
-		CoordMode, Pixel, Screen
-		MouseGetPos, X, Y
-		PixelGetColor, ret, % X, % Y
-		CoordMode, Mouse, % ex1
-		CoordMode, Pixel, % ex2
-		return ret		
-	}
+	; GetPixelBGREx()
+	; {
+	; 	local ex1, ex2, X, Y
+	; 	ex1 := A_CoordModeMouse
+	; 	ex2 := A_CoordModePixel
+	; 	CoordMode, Mouse, Screen
+	; 	CoordMode, Pixel, Screen
+	; 	MouseGetPos, X, Y
+	; 	PixelGetColor, ret, % X, % Y
+	; 	CoordMode, Mouse, % ex1
+	; 	CoordMode, Pixel, % ex2
+	; 	return ret		
+	; }
 
 	;------------------------- get window and window control under mouse -------------------------
 	GetWinHwnd()
