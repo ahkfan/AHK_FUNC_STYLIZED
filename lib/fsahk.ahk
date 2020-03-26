@@ -8,17 +8,7 @@ ahk().MsgControl(title, command)
 */
 
 
-/* 警告测试
-#include AHKFS_WARNING.ahk
-
-ahk := ahk()
-ahk.abc()
-return
-
-*/
-
-
-ahk()
+fsahk()
 {
     return __Class_AHK, __ClASS_AHK.base := AHKFS_WARNING()
 }

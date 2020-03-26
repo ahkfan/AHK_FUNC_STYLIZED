@@ -1,6 +1,8 @@
 /*
     return type of a certain obj
 
+    Directly call
+
     reference: https://blog.csdn.net/liuyukuan/article/details/90545903
     
     Distinguish Array and Associative Array based on

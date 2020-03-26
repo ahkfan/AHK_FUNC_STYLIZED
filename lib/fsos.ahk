@@ -1,6 +1,6 @@
-﻿;~系统与文件
+﻿; LIB of system infomation and operation
 
-os()
+fsos()
 {
     return __CLASS_AHKFS_OPERATION_SYSTEM
 }

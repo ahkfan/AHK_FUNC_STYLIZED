@@ -2,12 +2,14 @@
 /*
     Require ordered_dict.ahk
 
+    Directly call
+
     Example:
         ini := fsini()              ; return a instance of IniParser(__CLASS_AHKFS__INI)
         ini.Parse(filename)         ; parse a ini file
         ini[section, key] := value  ; set a section and a pair of key and value
         ini.write(filename)         ; write a ini tree to a file
-    
+
     Functions:
         ini[section, ""] := ""      ; creat an empty section
         ini["", key] := val         ; search all section in ini tree. If the tree has the key, set value of key to val
@@ -34,7 +36,7 @@
                                     ; if pass "" to section, function will search all section in ini tree
                                     ; and delete the first matched key-value pair
 
-        If you have created a section, then you can use 
+        If you have created a section, then you can use
         ini[section][key] := value to creat a pair
         But creat a section and a pair at the same time by this way is not allowed
         Other way that used to set value in Associative Array is allowed
@@ -51,7 +53,7 @@ fsini()
     Return new __CLASS_AHKFS__INI()
 }
 
-class __CLASS_AHKFS__INI 
+class __CLASS_AHKFS__INI
 {
     __New()
     {
@@ -61,24 +63,41 @@ class __CLASS_AHKFS__INI
 
     __Set(section, Key, Value)
     {
+        local
+        Section := Section ? Section : this.FindSection(Key)
         this.IniAST[section, Key] := Value
         Return this
     }
 
     __Get(Section, Key := "")
     {
-        Section := Section ? Section : this.IniAST.FindSection(Key)
+        local
+        Section := Section ? Section : this.FindSection(Key)
         return this.IniAST.Get(Section, Key)
+    }
+
+    FindSection(key)
+    {
+        local
+        for section, pairs in this
+        {
+            if (pairs.Has(key))
+                return section
+        }
+        ErrorLevel = 1
+        return ""
     }
 
     GetAllSections()
     {
+        local
         return this.IniAST.GetKeys()
     }
 
     Delete(section, key := "")
     {
-        section := section ? section : this.IniAST.FindSection(key)
+        local
+        section := section ? section : this.FindSection(key)
         if (key == "")
             this.IniAST.delete(section)
         this.IniAST[Section].delete(key)
@@ -86,8 +105,8 @@ class __CLASS_AHKFS__INI
 
     Insert(postion, section, key := "", value := "")
     {
-        section := section ? section : this.IniAST.FindSection(key)
-        d := this.IniAST._Keys
+        local
+        section := section ? section : this.FindSection(key)
         if (key)
         {
             c := this.IniAST[section]._Keys.Count()
@@ -121,8 +140,8 @@ class __CLASS_AHKFS__INI
 
     InsertBefore(postion, section, key := "", value := "")
     {
-        section := section ? section : this.IniAST.FindSection(key)
-        d := this.IniAST._Keys
+        local
+        section := section ? section : this.FindSection(key)
         if (key)
         {
             c := this.IniAST[section]._Keys.Count()
@@ -153,17 +172,19 @@ class __CLASS_AHKFS__INI
         }
         return this
     }
-    
+
     HasSection(Section)
     {
+        local
         return this.IniAST.Has(Section)
     }
-    
+
     HasKey(Section , Key)
     {
+        local
         if (Section)
         {
-            if (this.IniAST.FindSection(Key))
+            if (this.FindSection(Key))
                 return True
             else
                 return False
@@ -173,6 +194,7 @@ class __CLASS_AHKFS__INI
 
     Write(filename)
     {
+        local
         str := ""
         for section, pairs in this.IniAST
         {
@@ -180,7 +202,7 @@ class __CLASS_AHKFS__INI
             for key, value in pairs
                 str .= key . " = " . value . "`n"
         }
-        
+
         file := FileOpen(filename, "w")
         if (!IsObject(file))
         {
@@ -190,16 +212,17 @@ class __CLASS_AHKFS__INI
         file.Close()
     }
 
-    Parse(file)
+    Parse(filename)
     {
-        IfNotExist %file%
+        local
+        IfNotExist %filename%
             Throw Exception("Non-exist file passed!", -1)
-        
+
         currentSection := ""
 
-        Loop, Read, %file%
+        Loop, Read, %filename%
         {
-            Contain := Trim(A_LoopReadLine) 
+            Contain := Trim(A_LoopReadLine)
             if (Contain == "")
                 continue
             ; delete comment
@@ -226,32 +249,33 @@ class __CLASS_AHKFS__INI
                 if (rightK != k)
                     Throw Exception("Invaild key!", -1)
 			    v := Trim(SubStr(Contain, assignPos+1))
-                this.IniAST[currentSection, k] := v 
+                this.IniAST[currentSection, k] := v
             }
         }
     }
+
+    _NewEnum()
+    {
+        local
+        return this.IniAST._NewEnum()
+    }
 }
 
-; Inner AST class, do not call it directly!    
+; Inner AST class, do not call it directly!
 class __CLASS_AHKFS__INIAST__ extends OrderedDict
 {
     class __PAIRS__ extends OrderedDict
     {
         ; pass
     }
-    
+
     __Set(Section, Key, Value)
     {
         local
-        Section := Section ? Section : this.FindSection(Key)
         if (Section == "")
-        {
             return this
-        }
-        if (this.Has(section)) 
-        {
+        if (this.Has(section))
             this._Dict[section]["Set"](Key, Value)
-        }
         else
         {
             this._Keys.Push(section)
@@ -264,22 +288,11 @@ class __CLASS_AHKFS__INIAST__ extends OrderedDict
         return this
     }
 
-    FindSection(key)
-    {
-        for section, pairs in this
-        {
-            if (pairs.Has(key))
-                return section
-        }
-        return ""
-    }
-    
     Get(section, key := "")
     {
+        local
         if (section == "")
-        {
             return
-        }
         if (key == "")
             return this._Dict[section]
         return this._Dict[section]["Get"](key)

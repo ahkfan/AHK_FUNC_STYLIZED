@@ -1,7 +1,7 @@
 ﻿; LIB OF DEBUG
 ; 暂时搁置
 
-dbg()
+fsdbg()
 {
     return __CLASS_AHKFS_DEBUG
 }

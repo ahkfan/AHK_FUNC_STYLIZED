@@ -10,8 +10,9 @@ arr.print(arr)
 
 */
 
+#Include <fstype>
 
-arr()
+fsarr()
 {
 	return __ClASS_AHKFS_ARRAY
 }
@@ -22,6 +23,7 @@ class __ClASS_AHKFS_ARRAY
 	cpy(arr)
 	{
 		/*
+			Return a deep copy of an array
 			简介: 完全拷贝一个数组, 无法拷贝class中的方法, cpy = copy
 
 			[1] arr {Array / Associative Array}	任意层级的数组
@@ -54,9 +56,10 @@ class __ClASS_AHKFS_ARRAY
 		return ret
 	}
 	;------------------------- swap -------------------------
-	SwapKeyVar(arr)
+	SwapKeyVal(arr)
 	{
 		/*
+			Swap key and value of an Associative Array
 			简介: 调换数组的键值对, 不建议多维复杂的数组使用
 
 			[1] arr {Array / Associative Array}
@@ -67,15 +70,16 @@ class __ClASS_AHKFS_ARRAY
 		if fstype(arr) != "Associative Array"
 			Throw Exception("Invaild Value! Need an associative array, but pass a(n) " . fstype(array), -1)
 		ret := {}
-		for key, var in arr
-			ret[var] := key
+		for key, val in arr
+			ret[val] := key
 		return ret
 	}
 	;------------------------- debug -------------------------
 	print(arr)
 	{
 		/*
-		简介: 返回一个字符串形式的数组, 返回形式与ahk的定义形式相同, 如下: 
+			return an array in form of string. like below:
+		    返回一个字符串形式的数组, 返回形式与ahk的定义形式相同, 如下: 
 				[items*, [items*], {key: value}, ……]
 		*/
 		local

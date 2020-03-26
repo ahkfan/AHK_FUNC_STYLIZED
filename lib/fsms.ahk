@@ -10,7 +10,7 @@ m_pmsg_nc_click(str: witch:="L", int: hwnd)
 */
 
 
-ms()
+fsms()
 {
 	return __Class_AHKFS_Mouse
 }
@@ -92,57 +92,59 @@ class __Class_AHKFS_Mouse
 		MouseClickDrag %WhichButton%, %X1%, %Y1%, %X2%, %Y2%, %Speed%, %R%
 	}
 	
-	GetPos(ByRef OutputVarX:="", ByRef OutputVarY:="", ByRef OutputVarWin:="", ByRef OutputVarControl:="", Mode:=0)
+	GetPos(Mode:=0)
 	{
 		MouseGetPos OutputVarX, OutputVarY, OutputVarWin, OutputVarControl, %Mode%
 		OutputVarWin += 0
 		if (Mode & 2)
 			OutputVarControl += 0
+
+		return {"x": OutputVarX, "y": OutputVarY, "win": OutputVarWin, "control": OutputVarControl}
 	}
 
-	;------------------------- mouse left button event -------------------------
-	ClickOn(x, y, DUDelay := 0)
-	{
-		MouseClick, L, % x, % y, 1, 0, D
-		Sleep, % DUDelay
-		MouseClick, L, % x, % y, 1, 0, U
-	}
-	Click(DUDelay := 0)
-	{
-		MouseClick, L, , , 1, 0, D
-		Sleep, % DUDelay
-		MouseClick, L, , , 1, 0, U
-	}
-	Down()
-	{
-		MouseClick, L, , , 1, 0, D
-	}
-	Up()
-	{
-		MouseClick, L, , , 1, 0, U
-	}
+	; ;------------------------- mouse left button event -------------------------
+	; ClickOn(x, y, DUDelay := 0)
+	; {
+	; 	MouseClick, L, % x, % y, 1, 0, D
+	; 	Sleep, % DUDelay
+	; 	MouseClick, L, % x, % y, 1, 0, U
+	; }
+	; Click(DUDelay := 0)
+	; {
+	; 	MouseClick, L, , , 1, 0, D
+	; 	Sleep, % DUDelay
+	; 	MouseClick, L, , , 1, 0, U
+	; }
+	; Down()
+	; {
+	; 	MouseClick, L, , , 1, 0, D
+	; }
+	; Up()
+	; {
+	; 	MouseClick, L, , , 1, 0, U
+	; }
 
-	;------------------------- mouse right button event -------------------------
-	RClickOn(x, y, DUDelay := 0)
-	{
-		MouseClick, R, % x, % y, 1, 0, D
-		Sleep, % DUDelay
-		MouseClick, R, % x, % y, 1, 0, U
-	}
-	RClick(DUDelay := 0)
-	{
-		MouseClick, R, , , 1, 0, D
-		Sleep, % DUDelay
-		MouseClick, R, , , 1, 0, U
-	}	
-	RDown()
-	{
-		MouseClick, R, , , 1, 0, D
-	}
-	RUp()
-	{
-		MouseClick, R, , , 1, 0, U
-	}
+	; ;------------------------- mouse right button event -------------------------
+	; RClickOn(x, y, DUDelay := 0)
+	; {
+	; 	MouseClick, R, % x, % y, 1, 0, D
+	; 	Sleep, % DUDelay
+	; 	MouseClick, R, % x, % y, 1, 0, U
+	; }
+	; RClick(DUDelay := 0)
+	; {
+	; 	MouseClick, R, , , 1, 0, D
+	; 	Sleep, % DUDelay
+	; 	MouseClick, R, , , 1, 0, U
+	; }	
+	; RDown()
+	; {
+	; 	MouseClick, R, , , 1, 0, D
+	; }
+	; RUp()
+	; {
+	; 	MouseClick, R, , , 1, 0, U
+	; }
 
 	;------------------------- pixel under mouse -------------------------
 	GetColor()

@@ -9,7 +9,7 @@
 	Function:
 		split()          Same as StrSplit(), just omit pass string itself, other functions all do not need to pass string itself
 		lower(), upper() Same as StringLower and StringUpper, but cannot convert to title form
-		titler()         convert string into title form
+		title()          convert string into title form
 		join(iterable)   Return a string which is the concatenation of the strings in iterable.
 						 A Error will be throwed if there are any non-string values in iterable
 						 " ".join(["a", "b", "c"]) will return "a b c"
@@ -17,6 +17,7 @@
 
 	Property:
 		len              Return length of a string
+		1,2,3……			 
 
 */
 
@@ -38,17 +39,17 @@ class __CLASS_FS_STRING_EXTEND
 			throw Exception(err.Message, -1, err.What)
 	}
 
-	__Get(property)
+	__Get(property*)
     {
 		static _ := __CLASS_FS_STRING_EXTEND.Property_Get
 
-		if not _.haskey(property)
+		if property[1] is Integer
+			return __CLASS_FS_STRING_EXTEND.Property_Get.StrCut(this, property*)
+		if not _.haskey(property[1])
         {
-			if property is Integer
-				return SubStr(this, property, 1)
 			throw Exception("Get non-exist property.", -1)
 		}
-		return _[property](this)
+		return _[property[1]]
 	}
 
 
@@ -60,14 +61,14 @@ class __CLASS_FS_STRING_EXTEND
 ;------------------------- define string method -------------------------
 	class Method_Call
 	{
-		split(str, args*)
+		Split(str, args*)
 		{
 			if (args.length() > 3)
 				throw Exception("Too many parameters passed to function.", -1)
 			return StrSplit(str, args*)
 		}
 
-		lower(str, args*)
+		Lower(str, args*)
 		{
 			if args.length()
 				throw Exception("Too many parameters passed to function.", -1)
@@ -75,7 +76,7 @@ class __CLASS_FS_STRING_EXTEND
 			return str
 		}
 
-		upper(str, args*)
+		Upper(str, args*)
 		{
 			if args.length()
 				throw Exception("Too many parameters passed to function.", -1)
@@ -83,7 +84,7 @@ class __CLASS_FS_STRING_EXTEND
 			return str
 		}
 
-		title(str, args*)
+		Title(str, args*)
 		{
 			if args.length()
 				throw Exception("Too many parameters passed to function.", -1)
@@ -91,7 +92,7 @@ class __CLASS_FS_STRING_EXTEND
 			return str
 		}
 
-		replace(str, args*)
+		Replace(str, args*)
 		{
 			if (args.length() > 4)
 				throw Exception("Too many parameters passed to function.", -1)
@@ -100,7 +101,7 @@ class __CLASS_FS_STRING_EXTEND
 			return StrReplace(str, args*)
 		}
 
-		join(str, char_list, args*)
+		Join(str, char_list, args*)
 		{
 			res_str := ""
 			if (args.length())
@@ -121,6 +122,13 @@ class __CLASS_FS_STRING_EXTEND
 		len(str)
 		{
 			return StrLen(str)
+		}
+
+		StrCut(str, start, end := "")
+		{
+			start := (start>0) ? start : start+1
+			len := (end == "") ? 1 : end - start + 1
+			return SubStr(str, start, len)
 		}
 	}
 }

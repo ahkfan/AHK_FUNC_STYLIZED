@@ -7,9 +7,10 @@ rand_shuffle(source) pass
 rand_sample(source, num)
 */
 
-; #Include fstype.ahk		Put this file in lib or include it
+#Include <fstype>		
+; Put this file in lib or include it
 
-class Rand
+class __ClASS_AHKFS_RANDOM
 {
     __New()
     {
@@ -144,7 +145,7 @@ class Rand
             Loop %num%
             {
                 j := this.Rand(1, l-A_Index)
-                While (this._isInList(j, select))           ; TODO: 这句只是个表示意思的伪代码
+                While (this._isInList(j, select))
                     j := this.Rand(1, l-A_Index)
                 select.Push(j)
                 result.Push(source[j]) 
@@ -154,6 +155,7 @@ class Rand
     }
 }
 
-fsrand(){
-    Return Rand
+fsrand()
+{
+    Return __ClASS_AHKFS_RANDOM
 }

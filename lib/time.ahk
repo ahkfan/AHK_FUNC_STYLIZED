@@ -1,4 +1,6 @@
-﻿
+﻿; !!! Under Develop
+
+
 time_s(mSec, byref t, byref t0 := 0)
 {
 	/*

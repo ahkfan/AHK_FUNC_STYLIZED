@@ -2,7 +2,7 @@
 
 */
 
-eval()
+fseval()
 {
     return __CLASS_AHKFS_EVAL
 }

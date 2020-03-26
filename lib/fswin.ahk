@@ -1,9 +1,4 @@
-﻿/*
-win := win()
-*/
-
-
-win()
+﻿fswin()
 {
     return __ClASS_AHKFS_WINDOW
 }
@@ -28,7 +23,7 @@ class __ClASS_AHKFS_WINDOW
         */
         if (SubStr(hwnd, 1, 9) = "ahk_id 0x")
             return (format("{1:d}", SubStr(hwnd, 8)) > 0) ? (hwnd) : ("")
-        else if ((ret := format("0x{1:x}", hwnd)) <> "0x")
+        else if ((ret := format("0x{1:x}", hwnd)) != "0x")
             return "ahk_id " ret
         else
             return ""
@@ -164,30 +159,12 @@ class __ClASS_AHKFS_WINDOW
     GetClientSize(hWnd) 
     {
         /*
-        简介: 获取客户区尺寸
+        *  Get screen size of certain window by hWnd 
         */
         VarSetCapacity(rect, 16)
         DllCall("GetClientRect", "ptr", hWnd, "ptr", &rect)
         return { "w" : NumGet(rect, 8, "int"), "h" :  NumGet(rect, 12, "int") }
     }
-
-    GetPos(hwnd)
-    {
-        WinGetPos, x, y, , , % _hwnd
-        return {"x" : x, "y" : y}
-    }
-
-    GetClientPos(hwnd)
-    {
-        /*
-        简介: 获取窗口客户区全屏坐标
-        */
-        local x, y
-        ret := this.GetPos(hwnd)
-        cp  := PosToClient(hwnd, ret.x, ret.y)
-        return { "x" : (x- cp.x), "y" : (y- cp.y) }
-    }
-
 
     PosToClient(hWnd, x, y) 
     {
@@ -204,25 +181,29 @@ class __ClASS_AHKFS_WINDOW
 
     ; TODO: Need to modfiy to fs style
 
-    WinActivate(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
+    Activate(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
     {
         WinActivate %WinTitle%, %WinText%, %ExcludeTitle%, %ExcludeText%
     }
-    WinActivateBottom(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
+    
+    ActivateBottom(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
     {
         WinActivateBottom %WinTitle%, %WinText%, %ExcludeTitle%, %ExcludeText%
     }
-    WinClose(WinTitle:="", WinText:="", SecondsToWait:="", ExcludeTitle:="", ExcludeText:="")
+    
+    Close(WinTitle:="", WinText:="", SecondsToWait:="", ExcludeTitle:="", ExcludeText:="")
     {
         WinClose %WinTitle%, %WinText%, %SecondsToWait%, %ExcludeTitle%, %ExcludeText%
     }
-    WinGetClass(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
+    
+    GetClass(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
     {
         local OutputVar
         WinGetClass OutputVar, %WinTitle%, %WinText%, %ExcludeTitle%, %ExcludeText%
         return OutputVar
     }
-    WinGetClientPos(ByRef X:="", ByRef Y:="", ByRef Width:="", ByRef Height:="", WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
+    
+    GetClientPos(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
     {
         local hWnd, RECT
         hWnd := WinExist(WinTitle, WinText, ExcludeTitle, ExcludeText)
@@ -231,14 +212,18 @@ class __ClASS_AHKFS_WINDOW
         DllCall("user32\ClientToScreen", Ptr,hWnd, Ptr,&RECT)
         X := NumGet(&RECT, 0, "Int"), Y := NumGet(&RECT, 4, "Int")
         Width := NumGet(&RECT, 8, "Int"), Height := NumGet(&RECT, 12, "Int")
+
+        return {"x": X, "y": Y, "w": Width, "h": Height}
     }
-    WinGetControls(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
+    
+    GetControls(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
     {
         local OutputVar
         WinGet OutputVar, ControlList, %WinTitle%, %WinText%, %ExcludeTitle%, %ExcludeText%
         return StrSplit(OutputVar, "`n")
     }
-    WinGetControlsHwnd(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
+    
+    GetControlsHwnd(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
     {
         local OutputVar, ControlsHwnd, i
         WinGet OutputVar, ControlListHwnd, %WinTitle%, %WinText%, %ExcludeTitle%, %ExcludeText%
@@ -247,31 +232,36 @@ class __ClASS_AHKFS_WINDOW
             ControlsHwnd[i] += 0
         return ControlsHwnd
     }
-    WinGetCount(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
+    
+    GetCount(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
     {
         local OutputVar
         WinGet OutputVar, Count, %WinTitle%, %WinText%, %ExcludeTitle%, %ExcludeText%
         return OutputVar
     }
-    WinGetExStyle(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
+    
+    GetExStyle(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
     {
         local OutputVar
         WinGet OutputVar, ExStyle, %WinTitle%, %WinText%, %ExcludeTitle%, %ExcludeText%
         return OutputVar + 0
     }
-    WinGetID(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
+    
+    GetID(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
     {
         local OutputVar
         WinGet OutputVar, ID, %WinTitle%, %WinText%, %ExcludeTitle%, %ExcludeText%
         return OutputVar + 0
     }
-    WinGetIDLast(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
+    
+    GetIDLast(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
     {
         local OutputVar
         WinGet OutputVar, IDLast, %WinTitle%, %WinText%, %ExcludeTitle%, %ExcludeText%
         return OutputVar + 0
     }
-    WinGetList(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
+    
+    GetList(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
     {
         local OutputVar, List
         WinGet OutputVar, List, %WinTitle%, %WinText%, %ExcludeTitle%, %ExcludeText%
@@ -280,90 +270,109 @@ class __ClASS_AHKFS_WINDOW
             List.Push(OutputVar%A_Index% + 0)
         return List
     }
-    WinGetMinMax(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
+    
+    GetMinMax(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
     {
         local OutputVar
         WinGet OutputVar, MinMax, %WinTitle%, %WinText%, %ExcludeTitle%, %ExcludeText%
         return OutputVar
     }
-    WinGetPID(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
+    
+    GetPID(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
     {
         local OutputVar
         WinGet OutputVar, PID, %WinTitle%, %WinText%, %ExcludeTitle%, %ExcludeText%
         return OutputVar
     }
-    WinGetPos(ByRef X:="", ByRef Y:="", ByRef Width:="", ByRef Height:="", WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
+    
+    GetPos(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
     {
         WinGetPos X, Y, Width, Height, %WinTitle%, %WinText%, %ExcludeTitle%, %ExcludeText%
+
+        return {"x": X, "y": Y, "w": Width, "h": Height}
     }
-    WinGetProcessName(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
+    
+    GetProcessName(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
     {
         local OutputVar
         WinGet OutputVar, ProcessName, %WinTitle%, %WinText%, %ExcludeTitle%, %ExcludeText%
         return OutputVar
     }
-    WinGetProcessPath(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
+    
+    GetProcessPath(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
     {
         local OutputVar
         WinGet OutputVar, ProcessPath, %WinTitle%, %WinText%, %ExcludeTitle%, %ExcludeText%
         return OutputVar
     }
-    WinGetStyle(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
+    
+    GetStyle(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
     {
         local OutputVar
         WinGet OutputVar, Style, %WinTitle%, %WinText%, %ExcludeTitle%, %ExcludeText%
         return OutputVar + 0
     }
-    WinGetText(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
+    
+    GetText(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
     {
         local OutputVar
         WinGetText OutputVar, %WinTitle%, %WinText%, %ExcludeTitle%, %ExcludeText%
         if !ErrorLevel
             return OutputVar
     }
-    WinGetTitle(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
+    
+    GetTitle(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
     {
         local OutputVar
         WinGetTitle OutputVar, %WinTitle%, %WinText%, %ExcludeTitle%, %ExcludeText%
         return OutputVar
     }
-    WinGetTransColor(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
+    
+    GetTransColor(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
     {
         local OutputVar
         WinGet OutputVar, TransColor, %WinTitle%, %WinText%, %ExcludeTitle%, %ExcludeText%
         return OutputVar
     }
-    WinGetTransparent(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
+    
+    GetTransparent(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
     {
         local OutputVar
         WinGet OutputVar, Transparent, %WinTitle%, %WinText%, %ExcludeTitle%, %ExcludeText%
         return OutputVar
     }
-    WinHide(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
+    
+    Hide(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
     {
         WinHide %WinTitle%, %WinText%, %ExcludeTitle%, %ExcludeText%
     }
-    WinKill(WinTitle:="", WinText:="", SecondsToWait:="", ExcludeTitle:="", ExcludeText:="")
+    
+    Kill(WinTitle:="", WinText:="", SecondsToWait:="", ExcludeTitle:="", ExcludeText:="")
     {
         WinKill %WinTitle%, %WinText%, %SecondsToWait%, %ExcludeTitle%, %ExcludeText%
     }
-    WinMaximize(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
+    
+    Maximize(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
     {
         WinMaximize %WinTitle%, %WinText%, %ExcludeTitle%, %ExcludeText%
     }
-    WinMinimize(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
+    
+    Minimize(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
     {
         WinMinimize %WinTitle%, %WinText%, %ExcludeTitle%, %ExcludeText%
     }
-    WinMinimizeAll()
+    
+    MinimizeAll()
     {
         WinMinimizeAll
     }
-    WinMinimizeAllUndo()
+    
+    MinimizeAllUndo()
     {
         WinMinimizeAllUndo
     }
-    WinMove(Params*) ;X, Y [, Width, Height, WinTitle, WinText, ExcludeTitle, ExcludeText]
+    
+    Move(Params*) ;X, Y [, Width, Height, WinTitle, WinText, ExcludeTitle, ExcludeText]
     {
         local WinTitle, WinText, X, Y, Width, Height, ExcludeTitle, ExcludeText
         local Len
@@ -391,23 +400,28 @@ class __ClASS_AHKFS_WINDOW
         else
             WinMove
     }
-    WinMoveBottom(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
+    
+    MoveBottom(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
     {
         WinSet Bottom,, %WinTitle%, %WinText%, %ExcludeTitle%, %ExcludeText%
     }
-    WinMoveTop(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
+    
+    MoveTop(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
     {
         WinSet Top,, %WinTitle%, %WinText%, %ExcludeTitle%, %ExcludeText%
     }
-    WinRedraw(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
+    
+    Redraw(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
     {
         WinSet Redraw,, %WinTitle%, %WinText%, %ExcludeTitle%, %ExcludeText%
     }
-    WinRestore(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
+    
+    Restore(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
     {
         WinRestore %WinTitle%, %WinText%, %ExcludeTitle%, %ExcludeText%
     }
-    WinSetAlwaysOnTop(Value:="Toggle", WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
+    
+    SetAlwaysOnTop(Value:="Toggle", WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
     {
         local Hwnd
         WinGet Hwnd, ID, %WinTitle%, %WinText%, %ExcludeTitle%, %ExcludeText%
@@ -423,7 +437,8 @@ class __ClASS_AHKFS_WINDOW
         WinSet AlwaysOnTop, %Value%, ahk_id %Hwnd%
         return 1
     }
-    WinSetEnabled(Value, WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
+    
+    SetEnabled(Value, WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
     {
         local Hwnd
         WinGet Hwnd, ID, %WinTitle%, %WinText%, %ExcludeTitle%, %ExcludeText%
@@ -446,22 +461,26 @@ class __ClASS_AHKFS_WINDOW
             throw Exception("Paramter #1 invalid.", -1) ; v2 raises an error
         return 1
     }
-    WinSetExStyle(N, WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
+    
+    SetExStyle(N, WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
     {
         WinSet ExStyle, %N%, %WinTitle%, %WinText%, %ExcludeTitle%, %ExcludeText%
         return !ErrorLevel
     }
-    WinSetRegion(Options:="", WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
+    
+    SetRegion(Options:="", WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
     {
         WinSet Region, %Options%, %WinTitle%, %WinText%, %ExcludeTitle%, %ExcludeText%
         return !ErrorLevel
     }
-    WinSetStyle(N, WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
+    
+    SetStyle(N, WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
     {
         WinSet Style, %N%, %WinTitle%, %WinText%, %ExcludeTitle%, %ExcludeText%
         return !ErrorLevel
     }
-    WinSetTitle(NewTitle, Params*) ;NewTitle [, WinTitle, WinText, ExcludeTitle, ExcludeText]
+    
+    SetTitle(NewTitle, Params*) ;NewTitle [, WinTitle, WinText, ExcludeTitle, ExcludeText]
     {
         local WinTitle, WinText, ExcludeTitle, ExcludeText
         if (Params.Length())
@@ -475,7 +494,8 @@ class __ClASS_AHKFS_WINDOW
         else
             WinSetTitle %NewTitle%
     }
-    WinSetTransColor(ColorN, WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
+    
+    SetTransColor(ColorN, WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
     {
         local Hwnd
         WinGet Hwnd, ID, %WinTitle%, %WinText%, %ExcludeTitle%, %ExcludeText%
@@ -485,7 +505,8 @@ class __ClASS_AHKFS_WINDOW
         WinSet TransColor, %ColorN%, ahk_id %Hwnd%
         return 1
     }
-    WinSetTransparent(N, WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
+    
+    SetTransparent(N, WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
     {
         local Hwnd
         WinGet Hwnd, ID, %WinTitle%, %WinText%, %ExcludeTitle%, %ExcludeText%
@@ -495,39 +516,33 @@ class __ClASS_AHKFS_WINDOW
         WinSet Transparent, %N%, ahk_id %Hwnd%
         return 1
     }
-    WinShow(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
+    
+    Show(WinTitle:="", WinText:="", ExcludeTitle:="", ExcludeText:="")
     {
         WinShow %WinTitle%, %WinText%, %ExcludeTitle%, %ExcludeText%
     }
-    WinWait(WinTitle:="", WinText:="", Seconds:="", ExcludeTitle:="", ExcludeText:="")
+    
+    Wait(WinTitle:="", WinText:="", Seconds:="", ExcludeTitle:="", ExcludeText:="")
     {
         WinWait %WinTitle%, %WinText%, %Seconds%, %ExcludeTitle%, %ExcludeText%
         return ErrorLevel ? 0 : WinExist()
     }
-    WinWaitActive(WinTitle:="", WinText:="", Seconds:="", ExcludeTitle:="", ExcludeText:="")
+    
+    WaitActive(WinTitle:="", WinText:="", Seconds:="", ExcludeTitle:="", ExcludeText:="")
     {
         WinWaitActive %WinTitle%, %WinText%, %Seconds%, %ExcludeTitle%, %ExcludeText%
         return ErrorLevel ? 0 : WinExist()
     }
-    WinWaitClose(WinTitle:="", WinText:="", Seconds:="", ExcludeTitle:="", ExcludeText:="")
+    
+    WaitClose(WinTitle:="", WinText:="", Seconds:="", ExcludeTitle:="", ExcludeText:="")
     {
         WinWaitClose %WinTitle%, %WinText%, %Seconds%, %ExcludeTitle%, %ExcludeText%
         return !ErrorLevel
     }
-    WinWaitNotActive(WinTitle:="", WinText:="", Seconds:="", ExcludeTitle:="", ExcludeText:="")
+    
+    WaitNotActive(WinTitle:="", WinText:="", Seconds:="", ExcludeTitle:="", ExcludeText:="")
     {
         WinWaitNotActive %WinTitle%, %WinText%, %Seconds%, %ExcludeTitle%, %ExcludeText%
         return !ErrorLevel
-    }
-
-    ;--------------------------------------------
-    class msg
-    {
-        
-    }
-    ;--------------------------------------------
-    class op
-    {
-
     }
 }

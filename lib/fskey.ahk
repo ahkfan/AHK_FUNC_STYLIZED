@@ -45,7 +45,7 @@ class __CLASS_AHKFS_KEY
             return !ErrorLevel
     }
 
-    CaretGetPos(ByRef OutputVarX:="", ByRef OutputVarY:="")
+    CaretGetPos()
     {
         local GUITHREADINFO, hWnd, hWndC, Mode, OriginX, OriginY, POINT, RECT, TID
         ;this works but there was an issue regarding A_CaretX/A_CaretY not updating correctly:
@@ -82,5 +82,7 @@ class __CLASS_AHKFS_KEY
             OriginY := NumGet(&RECT, 4, "Int")
         }
         OutputVarX -= OriginX, OutputVarY -= OriginY
+
+        return {"x": OutputVarX, "y": OutputVarY}
     }
 }

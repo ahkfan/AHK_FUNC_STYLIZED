@@ -1,7 +1,7 @@
 ﻿; LIB OF PROGRAM ENV 
 
 
-prog()
+fsprog()
 {
     return __CLASS_AHKFS_PROGRAM
 }
@@ -149,10 +149,6 @@ class __CLASS_AHKFS_PROGRAM
         Process, WaitClose, %  NameOrPID, % OverTimeSec ? OverTimeSec : ("")
         return ErrorLevel   ;~ 返回原进程 pid 或 超时为0
     }
-
-
-
-
 }
 
 
