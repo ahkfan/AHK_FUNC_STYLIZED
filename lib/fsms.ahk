@@ -1,12 +1,12 @@
 ﻿
 /*
 
-m_get_pos()
+	mouse := fsms()
 
-m_pmsg_nc_move(str: witch:="L", int: hwnd)
-m_pmsg_nc_down(str: witch:="L", int: hwnd)
-m_pmsg_nc_up(str: witch:="L", int: hwnd)
-m_pmsg_nc_click(str: witch:="L", int: hwnd)
+	mouse.x         retrieve the x postion of mouse
+	mouse.y         retrieve the y postion of mouse
+					
+	mouse.CoordMode 
 */
 
 
@@ -18,7 +18,7 @@ fsms()
 class __Class_AHKFS_Mouse
 {
 	;------------------------- default config about mouse -------------------------
-	SetRelative(option)
+	CoordMode(option)
 	{
 		/*
 			screen / window / client

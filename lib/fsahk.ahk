@@ -1,8 +1,11 @@
-﻿/* ;~脚本进程
+﻿/* Lib of function about ahk script
 ahk().method()
 
-ahk().GetAllProcess()
-ahk().MsgControl(title, command)
+ahk().GetAllAHKProcess()               Get all active AHK process information
+ahk().PostMsgToScript(title, command)  send command to a script named 'title', the following command is allowed:
+                                            "pause"           "suspend"         "edit"            
+                                            "reload"          "exit"            "viewhistory"     
+                                            "viewvariables"   "viewhotkeys"
 
 
 */
@@ -62,7 +65,7 @@ class __ClASS_AHK
     }
 
     ;-----------------------------------
-    MsgControl(title, command)
+    PostMsgToScript(title, command)
     {
         static WM_COMMAND := 0x111
         static cmdDict := {"pause"           : 65403

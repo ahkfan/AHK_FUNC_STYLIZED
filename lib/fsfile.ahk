@@ -1,4 +1,11 @@
 ; LIB OF FILE
+/*
+    functions do the samething with file+functionanme
+    all available function:
+    Append, Copy, CreateShortcut, Delete, Encoding, GetAttrib
+    GetShortcut, GetSize, GetTime, GetVersion, Install, Move
+    Read, Recycle, RecycleEmpty, Select, SetAttrib, SetTime
+*/
 
 fsfile()
 {

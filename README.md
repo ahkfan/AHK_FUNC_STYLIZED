@@ -42,10 +42,10 @@ rand := fsrand()
   1. Its moulde function
   2. And its implementation classes
 
-|Moulde Function|Implementation Class|
-|:--:|:--:|
-|Return class to be called|Implementation of every method|
-|Only one, named by moulde|One or more, named by the rule:<br>\_\_AHKFS_CLASS_(TASK)|
+|      Moulde Function      |                   Implementation Class                    |
+| :-----------------------: | :-------------------------------------------------------: |
+| Return class to be called |              Implementation of every method               |
+| Only one, named by moulde | One or more, named by the rule:<br>\_\_CLASS_AHKFS_(TASK) |
 
 - Optional Extend folder contains optional moulde
 - controversial folder is for some controversial files

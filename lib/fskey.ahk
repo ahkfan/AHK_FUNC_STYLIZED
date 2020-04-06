@@ -1,4 +1,11 @@
-﻿;~键\
+﻿; Lib about hotkeys
+/*
+    same as the command 
+    all available functions:
+    Send, SendEvent, SendInput, SendMode, SendPlay, SendRaw
+    SetHotkey: work like Hotkey command
+    CaretGetPos: v2 function CaretGetPos return the pos: {x:xpos, y:ypos}
+*/
 
 fsKey()
 {

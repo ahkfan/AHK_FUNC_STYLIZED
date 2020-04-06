@@ -1,12 +1,12 @@
-﻿/*  数组与关联数组
+﻿/*  Lib about array and assciative array
 
 arr := arr()
 
-arr.cpy(arr)
+arr.cpy(arr)         Return a deep copy of an array
 
-arr.swapKeyVar(arr)
+arr.swapKeyVar(arr)  Swap key and value of an assciative array
 
-arr.print(arr)
+arr.print(arr)       Return an array in string form
 
 */
 
@@ -100,7 +100,7 @@ class __ClASS_AHKFS_ARRAY
 				ret := SubStr(ret, 1, -2)
 				ret .= "]"
 			case "Associative Array":
-			case "OrderedDict":
+			;case "OrderedDict":
 				ret .= "{"
 				for k,v in arr
 				{

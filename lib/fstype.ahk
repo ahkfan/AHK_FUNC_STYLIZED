@@ -1,5 +1,6 @@
 /*
     return type of a certain obj
+    Empty string "" is considered as None type
 
     Directly call
 
@@ -44,11 +45,5 @@ fstype(obj)
     if (obj == "")
         return "None"
 
-    if ((1 | obj) == "")
-        return "String"
-    
-    if instr(obj, ".")
-        return "Float"
-    else
-        return "Integer"
+    return obj := "" || [obj].GetCapacity(1) ? "String" : InStr(obj,".") ? "Float" : "Integer"
 }
